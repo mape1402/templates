@@ -1,0 +1,13 @@
+{ 
+    "author": "Development Team", 
+    "classifications": [ "Microservice", "CQRS" ], 
+    "name": "Microservice.Api", 
+    "identity": "Template.Api", 
+    "shortName": "template-api", 
+    "tags": { 
+        "language": "C#" 
+    }, 
+    "sourceName": "DTemplate", 
+    "preferNameDirectory" : "true",
+    "symbols":{ }
+}

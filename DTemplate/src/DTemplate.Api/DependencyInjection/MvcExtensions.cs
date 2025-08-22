@@ -1,0 +1,68 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.Routing;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using DTemplate.Api.Filters;
+using DTemplate.Domain.Identifier;
+using System.Text.Json.Serialization;
+
+namespace Microsoft.Extensions.DependencyInjection
+{
+    [ExcludeFromCodeCoverage]
+    internal static class MvcExtensions
+    {
+        internal static void AddMvcDefaults(this IServiceCollection services)
+        {
+            services.AddRouting(opts => opts.LowercaseUrls = true);
+            services.AddControllers(opts =>
+            {
+                opts.Filters.Add<GlobalExceptionFilter>();
+            });
+
+            services.Configure<MvcOptions>(opts =>
+            {
+                opts.Conventions.Add(new RoutePrefixConvention(new RouteAttribute("api/")));
+            });
+
+            services.Configure<JsonOptions>(opts =>
+            {
+                // Configure JSON options here if needed
+                // For example, to use camel case naming:
+                opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                opts.JsonSerializerOptions.Converters.Add(new CIdJsonConverter());
+                opts.JsonSerializerOptions.Converters.Add(new CIdNulleableJsonConverter());
+                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+        }
+    }
+
+    /// <summary>
+    /// An MVC application model convention that applies a global route prefix to all controllers.
+    /// </summary>
+    public class RoutePrefixConvention : IApplicationModelConvention
+    {
+        private readonly AttributeRouteModel RoutePrefix;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutePrefixConvention"/> class with the specified route dtemplate provider.
+        /// </summary>
+        /// <param name="route">The route dtemplate provider to use as a prefix.</param>
+        public RoutePrefixConvention(IRouteTemplateProvider route) => RoutePrefix = new AttributeRouteModel(route);
+
+        /// <summary>
+        /// Applies the route prefix to all controllers in the application model.
+        /// </summary>
+        /// <param name="application">The application model to modify.</param>
+        public void Apply(ApplicationModel application)
+        {
+            foreach (var selector in application.Controllers.SelectMany(c => c.Selectors))
+            {
+                if (selector.AttributeRouteModel != null)
+                    selector.AttributeRouteModel = AttributeRouteModel.CombineAttributeRouteModel(RoutePrefix, selector.AttributeRouteModel);
+                else
+                    selector.AttributeRouteModel = RoutePrefix;
+            }
+        }
+    }
+}
