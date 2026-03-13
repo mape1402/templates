@@ -164,7 +164,7 @@ public class OrdersController : BaseController
 - **Descripción:** Inicializa el filtro con logger y opciones de API.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `logger` | [`ILogger<GlobalExceptionFilter>`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1) | Registrador de eventos. |
 | `options` | [`IOptions<ApiBehaviorOptions>`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1) | Opciones de API. |
 - **Devuelve:** No aplica.
@@ -178,7 +178,7 @@ services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
 - **Descripción:** Procesa la excepción y genera un `ProblemDetails` con estado apropiado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `context` | [`ExceptionContext`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.exceptioncontext) | Contexto de excepción de ASP.NET Core. |
 - **Devuelve:** No aplica; modifica `context.Result` y `Response.StatusCode`.
 - **Excepciones:** No lanza explícitamente; registra el error.
@@ -227,7 +227,7 @@ public class OrderConsumer : BaseHubConsumer
 - **Descripción:** Registra servicios base (Swagger, persistencia, mediación, errores, mapeos, salud).
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
 | `configuration` | [`IConfiguration`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration) | Configuración de aplicación. |
 | `environment` | [`IWebHostEnvironment`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.hosting.iwebhostenvironment) | Entorno de hosting. |
@@ -242,7 +242,7 @@ builder.Services.AddDefaults(builder.Configuration, builder.Environment);
 - **Descripción:** Configura middleware por defecto (Swagger en desarrollo, HTTPS, routing, autorización, endpoints).
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `app` | [`IApplicationBuilder`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.builder.iapplicationbuilder) | Builder del pipeline HTTP. |
 | `environment` | [`IWebHostEnvironment`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.hosting.iwebhostenvironment) | Entorno de hosting. |
 - **Devuelve:** `IApplicationBuilder` configurado.
@@ -268,7 +268,7 @@ app.UseDefaults(app.Environment);
 - **Descripción:** Registra `AppDbContext` y `IDbContext` usando SQL Server (o PostgreSQL si se habilita).
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
   | `connectionString` | `string` | Cadena de conexión de la base de datos. |
 - **Devuelve:** No aplica.
@@ -291,7 +291,7 @@ services.AddPersistence(configuration.GetConnectionString("Default"));
 - **Descripción:** Configura routing, filtros globales, convención de rutas y serialización JSON con convertidores de [`CId`](#dtemplatedomain-cid) y enums.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No lanza explícitamente.
@@ -319,7 +319,7 @@ services.AddMvcDefaults();
 - **Descripción:** Inicializa el prefijo con un proveedor de plantilla de ruta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `route` | [`IRouteTemplateProvider`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.routing.iroutetemplateprovider) | Proveedor del prefijo. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No lanza explícitamente.
@@ -332,7 +332,7 @@ opts.Conventions.Add(new RoutePrefixConvention(new RouteAttribute("api/")));
 - **Descripción:** Inserta el prefijo en cada selector de controlador.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `application` | [`ApplicationModel`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.applicationmodels.applicationmodel) | Modelo de aplicación MVC. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No lanza explícitamente.
@@ -355,7 +355,7 @@ opts.Conventions.Add(new RoutePrefixConvention(new RouteAttribute("api/")));
 - **Descripción:** Registra Swagger, configura documento, filtros y carga XML de comentarios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** Puede propagar excepciones al cargar XML.
@@ -368,7 +368,7 @@ services.AddSwaggerDefaults();
 - **Descripción:** Configura endpoints de Swagger y Swagger UI con opciones de UI y entorno.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `app` | [`IApplicationBuilder`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.builder.iapplicationbuilder) | Builder de la aplicación. |
 | `env` | [`IWebHostEnvironment`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.hosting.iwebhostenvironment) | Entorno de hosting. |
 - **Devuelve:** No aplica.
@@ -391,7 +391,7 @@ app.UseSwaggerDefaults(app.Environment);
 - **Descripción:** Registra checks de salud básicos (autochequeo “Self”).
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
   | `connectionString` | `string` | Cadena de conexión; actualmente no se usa. |
 - **Devuelve:** No aplica.
@@ -404,7 +404,7 @@ services.AddHealthChecks(connectionString);
 - **Descripción:** Mapea endpoints `/health`, `/health/live` y `/health/ready`.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `endpoints` | [`IEndpointRouteBuilder`](https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.routing.iendpointroutebuilder) | Enrutador de endpoints. |
 - **Devuelve:** No aplica.
 - **Ejemplo:**
@@ -431,7 +431,7 @@ endpoints.MapHealthCheckEndPoints();
 - **Descripción:** Inicializa un bridge hacia `IMediator`.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `spider` | `ISpider` | Instancia de spider. |
 - **Devuelve:** `IServiceBridge<IMediator>`.
 - **Ejemplo:**
@@ -443,7 +443,7 @@ var mediatorBridge = spider.AsMediator();
 - **Descripción:** Envía un request sin respuesta mediante el bridge.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `bridge` | `IServiceBridge<IMediator, TRequest>` | Bridge configurado. |
   | `request` | `TRequest` | Request a enviar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -457,7 +457,7 @@ await bridge.Send(new Ping());
 - **Descripción:** Envía un request con respuesta mediante el bridge.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `bridge` | `IServiceBridge<IMediator, TRequest, TResponse>` | Bridge configurado. |
   | `request` | `TRequest` | Request a enviar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -471,7 +471,7 @@ var response = await bridge.Send<FindOrder, OrderDto>(query);
 - **Descripción:** Configura el bridge con pipeline de forwarding por defecto.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `bridge` | `IServiceBridge<IMediator>` | Bridge base. |
 - **Devuelve:** `IServiceBridge<IMediator, TRequest>`.
 - **Ejemplo:**
@@ -483,7 +483,7 @@ var forwarding = bridge.DefaultForwading<MyCommand>();
 - **Descripción:** Configura forwarding para requests con respuesta.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `bridge` | `IServiceBridge<IMediator>` | Bridge base. |
 - **Devuelve:** `IServiceBridge<IMediator, TRequest, TResponse>`.
 - **Ejemplo:**
@@ -495,7 +495,7 @@ var forwarding = bridge.DefaultForwading<GetOrder, OrderDto>();
 - **Descripción:** Envía un request usando forwarding por defecto.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `spider` | `ISpider` | Spider. |
   | `request` | `TRequest` | Request. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -509,7 +509,7 @@ await spider.DefaultSend(new Ping());
 - **Descripción:** Envía un request con respuesta usando forwarding por defecto.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `spider` | `ISpider` | Spider. |
   | `request` | `IRequest<TResponse>` | Request. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -548,7 +548,7 @@ No aplica.
 - **Descripción:** Cambia tipo, formato y ejemplo cuando el tipo es [`CId`](#dtemplatedomain-cid).
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `schema` | `OpenApiSchema` | Esquema a modificar. |
   | `context` | `SchemaFilterContext` | Contexto del filtro. |
 - **Devuelve:** No aplica.
@@ -570,7 +570,7 @@ services.AddSwaggerGen(o => o.SchemaFilter<CIdSchemaFilter>());
 - **Descripción:** Busca y remueve el parámetro `version` del listado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `operation` | `OpenApiOperation` | Operación Swagger. |
   | `context` | `OperationFilterContext` | Contexto del filtro. |
 - **Devuelve:** No aplica.
@@ -592,7 +592,7 @@ options.OperationFilter<RemoveVersionParametersFilter>();
 - **Descripción:** Reescribe las rutas del documento con la versión concreta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `swaggerDoc` | `OpenApiDocument` | Documento Swagger. |
   | `context` | `DocumentFilterContext` | Contexto del filtro. |
 - **Devuelve:** No aplica.
@@ -805,7 +805,7 @@ var items = batch.AsEnumerable();
 - **Descripción:** Obtiene una entidad según criterios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `criteria` | [`GetOneCriteria<TEntity>`](#dtemplatebusiness-getonecriteria) | Criterios de selección. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<TExpected>` con la entidad o proyección encontrada (puede ser nulo si no existe).
@@ -819,7 +819,7 @@ var entity = await reader.GetOneAsync<Entity, Dto>(criteria);
 - **Descripción:** Obtiene múltiples entidades según criterios.
 - **Parámetros:**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `criteria` | [`GetManyCriteria<TEntity>`](#dtemplatebusiness-getmanycriteria) | Criterios de selección. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<`[`BatchResult<TExpected>`](#dtemplatebusiness-batchresult)`>` con resultados y metadatos de paginación.
@@ -843,7 +843,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Guarda una entidad nueva en el almacenamiento.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a guardar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa cuando la entidad es persistida.
@@ -853,7 +853,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Persiste cambios en una entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a actualizar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa al guardar cambios.
@@ -863,7 +863,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Elimina una entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a eliminar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa al eliminar.
@@ -883,7 +883,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Mapea el objeto de origen a un nuevo objeto de destino.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `source` | `TSource` | Instancia de origen. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `ValueTask<TDestination>` con el resultado del mapeo.
@@ -893,7 +893,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica valores del origen sobre un destino existente.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `source` | `TSource` | Objeto origen. |
   | `destination` | `TDestination` | Objeto destino a actualizar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -913,7 +913,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Valida el modelo especificado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `model` | `TModel` | Modelo a validar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `ValueTask` que completa cuando la validación termina.
@@ -933,7 +933,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Inicializa el adaptador con un proveedor de servicios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Contenedor de servicios para resolver validadores. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `serviceProvider` es nulo.
@@ -942,7 +942,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Resuelve un `IValidator<TModel>` y valida el modelo.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `model` | `TModel` | Modelo a validar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `ValueTask` que completa al finalizar la validación.
@@ -963,7 +963,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Inicializa el adaptador con una instancia de AutoMapper.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `mapper` | `IMapper` | Motor de mapeo. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `mapper` es nulo.
@@ -972,7 +972,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Ejecuta el mapeo y devuelve el destino.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `source` | `TSource` | Instancia de origen. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `ValueTask<TDestination>` con el objeto mapeado.
@@ -982,7 +982,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica el mapeo al objeto destino existente.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `source` | `TSource` | Origen de datos. |
   | `destination` | `TDestination` | Destino a actualizar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -1007,7 +1007,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Inicializa el adaptador con dependencias de filtrado, acceso a datos y mapeo.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `sieveProcessor` | `ISieveProcessor` | Motor Sieve para filtros/orden. |
   | `dbContext` | `IDbContext` | Contexto de datos. |
   | `mapper` | `IMapper` | Motor de mapeo. |
@@ -1018,7 +1018,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica filtros y devuelve la entidad o una proyección del tipo esperado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `criteria` | [`GetOneCriteria<TEntity>`](#dtemplatebusiness-getonecriteria) | Criterios de consulta. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<TExpected>` con la entidad o proyección (puede ser nulo).
@@ -1028,7 +1028,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica filtros, orden y paginado, devolviendo un lote con metadatos.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `criteria` | [`GetManyCriteria<TEntity>`](#dtemplatebusiness-getmanycriteria) | Criterios de consulta. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<BatchResult<TExpected>>` con resultados y paginación.
@@ -1038,7 +1038,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica filtros y orden por expresiones LINQ.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `source` | [`IQueryable<TEntity>`](https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1) | Fuente de datos. |
   | `criteria` | [`GetManyCriteria<TEntity>`](#dtemplatebusiness-getmanycriteria) | Criterios con expresiones. |
 - **Devuelve:** `IQueryable<TEntity>` con filtros/orden aplicados.
@@ -1048,7 +1048,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica filtros/orden usando Sieve si están definidos.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `source` | [`IQueryable<TEntity>`](https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1) | Fuente de datos. |
   | `criteria` | [`GetManyCriteria<TEntity>`](#dtemplatebusiness-getmanycriteria) | Criterios con filtros/orden. |
 - **Devuelve:** `IQueryable<TEntity>` con filtros/orden Sieve aplicados.
@@ -1058,7 +1058,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - **Descripción:** Aplica paginado y devuelve consulta y metadatos de paginación.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `source` | [`IQueryable<TEntity>`](https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1) | Fuente de datos. |
   | `criteria` | [`GetManyCriteria<TEntity>`](#dtemplatebusiness-getmanycriteria) | Criterios con paginación. |
 - **Devuelve:** Tupla con query, `rowCount`, `pageCount`, `pageNumber`, `pageSize`.
@@ -1086,7 +1086,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Inicializa el adaptador con el contexto de datos.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `dbContext` | `IDbContext` | Contexto para persistir datos. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `dbContext` es nulo.
@@ -1095,7 +1095,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Agrega la entidad al contexto y guarda cambios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a guardar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa tras persistir.
@@ -1105,7 +1105,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Persiste cambios en la entidad usando el contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a actualizar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa al guardar.
@@ -1115,7 +1115,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Elimina la entidad y guarda cambios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a eliminar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa tras eliminar.
@@ -1134,7 +1134,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Maneja el comando y devuelve la respuesta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Comando a procesar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<TResponse>` con la respuesta generada.
@@ -1153,7 +1153,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Maneja el comando sin respuesta explícita.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Comando a procesar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task` que completa cuando finaliza el manejo.
@@ -1188,7 +1188,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios.
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1197,7 +1197,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Orquesta validación, mapeo, guardado y respuesta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de creación.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TResponse>` con la respuesta creada.
@@ -1207,7 +1207,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Valida el request cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `ValueTask` que completa al validar.
@@ -1217,7 +1217,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Mapea el request a entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request origen.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `ValueTask<TEntity>` con la entidad mapeada.
@@ -1227,7 +1227,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Persiste la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad a guardar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1238,7 +1238,7 @@ var batch = await reader.GetManyAsync<Order, OrderDto>(criteria);
 - **Descripción:** Mapea la entidad a respuesta o consulta proyección.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad persistida.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1279,7 +1279,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios.
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1288,7 +1288,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Orquesta validación, mapeo y persistencia.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de creación.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task` al completar.
@@ -1298,7 +1298,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida el request cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `ValueTask`.
@@ -1308,7 +1308,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Mapea el request a entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request origen.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `ValueTask<TEntity>` con la entidad mapeada.
@@ -1318,7 +1318,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Persiste la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad a guardar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1353,7 +1353,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios.
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1362,7 +1362,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Obtiene, valida, elimina y construye la respuesta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de eliminación.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TResponse>` con la respuesta.
@@ -1372,7 +1372,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Recupera la entidad a eliminar.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con el Id.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TEntity>` con la entidad.
@@ -1382,7 +1382,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida request/entidad cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `entity` | `TEntity` | Entidad a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1393,7 +1393,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Elimina la entidad en almacenamiento.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a eliminar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task` al completar.
@@ -1403,7 +1403,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la respuesta final tras la eliminación.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad eliminada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1437,7 +1437,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios.
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1446,7 +1446,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Obtiene, valida y elimina la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de eliminación.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task` al completar.
@@ -1456,7 +1456,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Recupera la entidad a eliminar.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con el Id.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TEntity>` con la entidad.
@@ -1466,7 +1466,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida request/entidad cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `entity` | `TEntity` | Entidad a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1477,7 +1477,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Elimina la entidad en almacenamiento.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a eliminar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task` al completar.
@@ -1513,7 +1513,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios.
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1522,7 +1522,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Obtiene, valida, actualiza y responde.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de actualización.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TResponse>` con la respuesta.
@@ -1532,7 +1532,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Recupera la entidad a actualizar.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con el Id.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TEntity>` con la entidad.
@@ -1542,7 +1542,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida request/entidad cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `entity` | `TEntity` | Entidad a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1553,7 +1553,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Aplica el mapeo del request sobre la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con datos actualizados.
   | `entity` | `TEntity` | Entidad a modificar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1564,7 +1564,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Persiste la entidad actualizada.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad actualizada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1575,7 +1575,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Mapea la entidad a respuesta o consulta proyección.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad actualizada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1600,7 +1600,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios.
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1609,7 +1609,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Obtiene, valida y actualiza la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de actualización.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task`.
@@ -1619,7 +1619,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Recupera la entidad a actualizar.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con el Id.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TEntity>` con la entidad.
@@ -1629,7 +1629,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida request/entidad cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `entity` | `TEntity` | Entidad a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1640,7 +1640,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Aplica el mapeo del request sobre la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con datos actualizados.
   | `entity` | `TEntity` | Entidad a modificar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1651,7 +1651,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Persiste la entidad actualizada.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad actualizada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1677,7 +1677,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1686,7 +1686,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Obtiene, valida, aplica el patch, actualiza y devuelve respuesta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de patch.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TResponse>` con la respuesta.
@@ -1696,7 +1696,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Recupera la entidad a modificar.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con el Id.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TEntity>` con la entidad.
@@ -1706,7 +1706,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida request/entidad cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `entity` | `TEntity` | Entidad a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1717,7 +1717,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Aplica los cambios parciales sobre la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con cambios parciales.
   | `entity` | `TEntity` | Entidad a modificar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1728,7 +1728,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Persiste la entidad actualizada.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad actualizada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1739,7 +1739,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la respuesta final tras el patch.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad modificada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1764,7 +1764,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1773,7 +1773,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Obtiene, valida, aplica patch y actualiza la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request de patch.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task`.
@@ -1783,7 +1783,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Recupera la entidad a modificar.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con el Id.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
 - **Devuelve:** `Task<TEntity>` con la entidad.
@@ -1793,7 +1793,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Valida request/entidad cuando `ValidateRequest` es verdadero.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a validar.
   | `entity` | `TEntity` | Entidad a validar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1804,7 +1804,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Aplica los cambios parciales sobre la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request con cambios parciales.
   | `entity` | `TEntity` | Entidad a modificar.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1815,7 +1815,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Persiste la entidad actualizada.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request asociado.
   | `entity` | `TEntity` | Entidad actualizada.
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación.
@@ -1855,7 +1855,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1864,7 +1864,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Ejecuta la consulta y devuelve la respuesta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query a procesar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<TResponse>` con el resultado.
@@ -1874,7 +1874,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la expresión de filtro para la consulta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query con criterios.
 - **Devuelve:** `Expression<Func<TEntity, bool>>` con el filtro.
 - **Excepciones:** Depende de la implementación concreta.
@@ -1892,7 +1892,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa la query con el identificador.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `id` | [`CId`](#dtemplatedomain-cid) | Identificador del recurso. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
@@ -1911,7 +1911,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1920,7 +1920,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Genera filtro por identificador.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query con el Id. |
 - **Devuelve:** `Expression<Func<TEntity, bool>>`.
 - **Excepciones:** Depende de la implementación concreta.
@@ -1954,7 +1954,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -1963,7 +1963,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Ejecuta la consulta y devuelve un lote de resultados.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query a procesar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<BatchResult<TResponse>>` con resultados.
@@ -1973,7 +1973,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la expresión de filtro para la consulta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `query` | `TQuery` | Query con criterios.
 - **Devuelve:** `Expression<Func<TEntity, bool>>`.
 - **Excepciones:** Depende de la implementación concreta.
@@ -1982,7 +1982,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la expresión de ordenamiento.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `query` | `TQuery` | Query con orden.
 - **Devuelve:** `Expression<Func<TEntity, object>>`.
 - **Excepciones:** Depende de la implementación concreta.
@@ -2020,7 +2020,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa la query con la configuración de paginado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `pagedSettings` | [`PagedSettings`](#dtemplatebusiness-pagedsettings) | Configuración de paginado. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -2050,7 +2050,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa dependencias del handler.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `serviceProvider` | [`IServiceProvider`](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) | Proveedor de servicios. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si es nulo.
@@ -2059,7 +2059,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Ejecuta la consulta paginada y devuelve respuesta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query a procesar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<`[`PagedResponse<TResponse>`](#dtemplatebusiness-pagedresponse)`>` con resultados paginados.
@@ -2069,7 +2069,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la expresión de filtros para la consulta.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query con criterios.
 - **Devuelve:** `Expression<Func<TEntity, bool>>`.
 - **Excepciones:** Depende de la implementación concreta.
@@ -2078,7 +2078,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Construye la expresión de ordenamiento.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TQuery` | Query con orden.
 - **Devuelve:** `Expression<Func<TEntity, object>>`.
 - **Excepciones:** Depende de la implementación concreta.
@@ -2096,7 +2096,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicia una transacción, ejecuta el handler siguiente y confirma o revierte según el resultado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `request` | `TRequest` | Request a procesar. |
   | `next` | `Handler<TResponse>` | Delegado al siguiente handler. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
@@ -2116,7 +2116,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Registra adaptadores, comportamientos y servicios de negocio.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
 - **Devuelve:** `IServiceCollection` con registros agregados.
 - **Excepciones:** Puede propagar errores de registro.
@@ -2140,7 +2140,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa la excepción con el código HTTP.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `statusCode` | [`HttpStatusCode`](https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode) | Código HTTP asociado. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
@@ -2149,7 +2149,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Inicializa la excepción con código HTTP y mensaje.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `statusCode` | [`HttpStatusCode`](https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode) | Código HTTP asociado. |
   | `message` | `string` | Mensaje de error. |
 - **Devuelve:** No aplica.
@@ -2175,7 +2175,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 400 con mensaje.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `message` | `string` | Mensaje de error. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
@@ -2194,7 +2194,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 404 indicando recurso y clave.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `resource` | `string` | Nombre del recurso. |
   | `key` | `string` | Identificador buscado. |
 - **Devuelve:** No aplica.
@@ -2204,7 +2204,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 404 con mensaje.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `message` | `string` | Mensaje de error. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
@@ -2223,7 +2223,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 401 para el usuario indicado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `user` | `string` | Usuario implicado. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
@@ -2232,7 +2232,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 401 con mensaje personalizado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `user` | `string` | Usuario implicado. |
   | `message` | `string` | Mensaje de error. |
 - **Devuelve:** No aplica.
@@ -2252,7 +2252,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 403 para recurso y usuario.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `resource` | `string` | Recurso protegido. |
   | `user` | `string` | Usuario implicado. |
 - **Devuelve:** No aplica.
@@ -2262,7 +2262,7 @@ public class CreateOrderHandler : CreateCommandHandler<CreateOrder, OrderRespons
 - **Descripción:** Crea una excepción 403 con mensaje.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `message` | `string` | Mensaje de error. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
@@ -2339,7 +2339,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Crea un identificador a partir de un valor válido.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `value` | `object` | Valor compatible con la configuración. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `InvalidOperationException` si el tipo no es permitido.
@@ -2354,7 +2354,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Convierte una cadena en `CId` usando el parse configurado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `value` | `string` | Valor a convertir. |
 - **Devuelve:** `CId` parseado.
 - **Excepciones:** `InvalidOperationException` si no hay parse configurado.
@@ -2375,7 +2375,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Compara el identificador con otro objeto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `obj` | `object` | Objeto a comparar. |
 - **Devuelve:** `bool` indicando igualdad.
 - **Excepciones:** No aplica.
@@ -2384,7 +2384,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Compara con otro `CId`.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `other` | `CId` | Identificador a comparar. |
 - **Devuelve:** `bool`.
 - **Excepciones:** No aplica.
@@ -2399,7 +2399,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Compara dos identificadores.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `left` | `CId` | Operando izquierdo. |
   | `right` | `CId` | Operando derecho. |
 - **Devuelve:** `bool` indicando igualdad.
@@ -2464,7 +2464,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Indica si el convertidor puede convertir desde el tipo dado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `context` | [`ITypeDescriptorContext`](https://learn.microsoft.com/dotnet/api/system.componentmodel.itypedescriptorcontext) | Contexto de conversión. |
 | `sourceType` | [`Type`](https://learn.microsoft.com/dotnet/api/system.type) | Tipo de origen. |
 - **Devuelve:** `bool`.
@@ -2474,7 +2474,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Convierte un valor de origen a `CId`.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `context` | [`ITypeDescriptorContext`](https://learn.microsoft.com/dotnet/api/system.componentmodel.itypedescriptorcontext) | Contexto de conversión. |
 | `culture` | [`CultureInfo`](https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo) | Cultura para la conversión. |
   | `value` | `object` | Valor a convertir. |
@@ -2495,7 +2495,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Lee un valor JSON y lo convierte a `CId`.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `reader` | [`Utf8JsonReader`](https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader) | Lector JSON. |
 | `typeToConvert` | [`Type`](https://learn.microsoft.com/dotnet/api/system.type) | Tipo destino. |
 | `options` | [`JsonSerializerOptions`](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions) | Opciones de serialización. |
@@ -2506,7 +2506,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Escribe el `CId` como JSON.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `writer` | [`Utf8JsonWriter`](https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter) | Escritor JSON. |
   | `value` | `CId` | Valor a serializar. |
 | `options` | [`JsonSerializerOptions`](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions) | Opciones de serialización. |
@@ -2527,7 +2527,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Lee un valor JSON y lo convierte a `CId?`.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `reader` | [`Utf8JsonReader`](https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader) | Lector JSON. |
 | `typeToConvert` | [`Type`](https://learn.microsoft.com/dotnet/api/system.type) | Tipo destino. |
 | `options` | [`JsonSerializerOptions`](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions) | Opciones de serialización. |
@@ -2538,7 +2538,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Escribe el `CId?` como JSON.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `writer` | [`Utf8JsonWriter`](https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter) | Escritor JSON. |
   | `value` | `CId?` | Valor a serializar. |
 | `options` | [`JsonSerializerOptions`](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions) | Opciones de serialización. |
@@ -2563,7 +2563,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Genera el siguiente valor `CId` para la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `entry` | [`EntityEntry`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry) | Entrada de entidad en EF Core. |
 - **Devuelve:** `object` con el nuevo identificador.
 - **Excepciones:** Puede lanzar excepciones si no hay configuración.
@@ -2581,7 +2581,7 @@ Proyecto con entidades base y un identificador fuerte [`CId`](#dtemplatedomain-c
 - **Descripción:** Configura el identificador fuerte y registra convertidores en DI.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `services` | [`IServiceCollection`](https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection) | Contenedor de servicios. |
 | `setup` | [`Action<CIdConfiguration<TTargetType, TDbType>>`](https://learn.microsoft.com/dotnet/api/system.action-1) | Configuración del identificador. |
 - **Devuelve:** `IServiceCollection`.
@@ -2634,7 +2634,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Agrega una entidad al contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a agregar. |
 - **Devuelve:** `EntityEntry<TEntity>` ([`EntityEntry<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry-1)) con la entrada asociada.
 - **Excepciones:** `ArgumentNullException` si `entity` es nulo.
@@ -2643,7 +2643,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Agrega una entidad al contexto de forma asíncrona.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a agregar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `ValueTask<EntityEntry<TEntity>>` ([`EntityEntry<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry-1)).
@@ -2653,7 +2653,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Agrega un conjunto de entidades al contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | [`IEnumerable<object>`](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1) | Entidades a agregar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2662,7 +2662,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Agrega un conjunto de entidades al contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | `object[]` | Entidades a agregar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2671,7 +2671,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Agrega un conjunto de entidades de forma asíncrona.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | [`IEnumerable<object>`](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1) | Entidades a agregar. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task`.
@@ -2681,7 +2681,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Agrega un conjunto de entidades de forma asíncrona.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | `object[]` | Entidades a agregar. |
 - **Devuelve:** `Task`.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2690,7 +2690,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Adjunta una entidad al contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a adjuntar. |
 - **Devuelve:** `EntityEntry<TEntity>` ([`EntityEntry<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry-1)).
 - **Excepciones:** `ArgumentNullException` si `entity` es nulo.
@@ -2699,7 +2699,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Adjunta un conjunto de entidades al contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | [`IEnumerable<object>`](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1) | Entidades a adjuntar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2708,7 +2708,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Adjunta un conjunto de entidades al contexto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | `object[]` | Entidades a adjuntar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2717,7 +2717,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Busca una entidad por clave primaria.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `keyValues` | `object[]` | Valores de clave. |
 - **Devuelve:** `TEntity?` con la entidad encontrada.
 - **Excepciones:** `ArgumentNullException` si `keyValues` es nulo.
@@ -2726,7 +2726,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Busca una entidad por clave primaria de forma asíncrona.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `keyValues` | `object[]` | Valores de clave. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `ValueTask<TEntity?>`.
@@ -2736,7 +2736,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Busca una entidad por clave primaria de forma asíncrona.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `keyValues` | `object[]` | Valores de clave. |
 - **Devuelve:** `ValueTask<TEntity?>`.
 - **Excepciones:** `ArgumentNullException` si `keyValues` es nulo.
@@ -2745,7 +2745,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Marca una entidad para eliminación.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a eliminar. |
 - **Devuelve:** `EntityEntry<TEntity>` ([`EntityEntry<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry-1)).
 - **Excepciones:** `ArgumentNullException` si `entity` es nulo.
@@ -2754,7 +2754,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Marca un conjunto de entidades para eliminación.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | [`IEnumerable<object>`](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1) | Entidades a eliminar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2763,7 +2763,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Marca un conjunto de entidades para eliminación.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | `object[]` | Entidades a eliminar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2772,7 +2772,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Marca una entidad como modificada.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad a actualizar. |
 - **Devuelve:** `EntityEntry<TEntity>` ([`EntityEntry<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry-1)).
 - **Excepciones:** `ArgumentNullException` si `entity` es nulo.
@@ -2781,7 +2781,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Marca un conjunto de entidades como modificadas.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | `object[]` | Entidades a actualizar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2790,7 +2790,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Marca un conjunto de entidades como modificadas.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entities` | [`IEnumerable<object>`](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1) | Entidades a actualizar. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `entities` es nulo.
@@ -2799,7 +2799,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Obtiene la entrada de la entidad.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `object` | Entidad de referencia. |
 - **Devuelve:** `EntityEntry` ([`EntityEntry`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry)).
 - **Excepciones:** `ArgumentNullException` si `entity` es nulo.
@@ -2808,7 +2808,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Obtiene la entrada de la entidad tipada.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `entity` | `TEntity` | Entidad de referencia. |
 - **Devuelve:** `EntityEntry<TEntity>` ([`EntityEntry<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.changetracking.entityentry-1)).
 - **Excepciones:** `ArgumentNullException` si `entity` es nulo.
@@ -2829,7 +2829,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Guarda cambios con opción de aceptar cambios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `acceptAllChangesOnSuccess` | `bool` | Indica si acepta cambios. |
 - **Devuelve:** `int`.
 - **Excepciones:** Puede lanzar `DbUpdateException`.
@@ -2838,7 +2838,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Guarda cambios de forma asíncrona.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<int>`.
 - **Excepciones:** Puede lanzar `DbUpdateException`.
@@ -2847,7 +2847,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Guarda cambios de forma asíncrona con opción de aceptar cambios.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `acceptAllChangesOnSuccess` | `bool` | Indica si acepta cambios. |
   | `cancellationToken` | [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) | Token de cancelación. |
 - **Devuelve:** `Task<int>`.
@@ -2857,7 +2857,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Compara el contexto con otro objeto.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
   | `obj` | `object` | Objeto a comparar. |
 - **Devuelve:** `bool`.
 - **Excepciones:** No aplica.
@@ -2888,7 +2888,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Inicializa el contexto con opciones de configuración.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `options` | [`DbContextOptions<AppDbContext>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.dbcontextoptions-1) | Opciones del contexto. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `options` es nulo.
@@ -2897,7 +2897,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Configura el modelo y aplica configuraciones del ensamblado.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `builder` | [`ModelBuilder`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.modelbuilder) | Constructor de modelo. |
 - **Devuelve:** No aplica.
 - **Excepciones:** Puede propagar excepciones de configuración.
@@ -2915,7 +2915,7 @@ Proyecto de persistencia con [`AppDbContext`](#dtemplatepersistence-appdbcontext
 - **Descripción:** Configura claves, generadores y convertidores para entidades con `CId`.
 - **Parámetros**
   | Nombre | Tipo | Descripción |
-  | --- | --- | --- |
+| --- | --- | --- |
 | `builder` | [`EntityTypeBuilder<TEntity>`](https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1) | Constructor de entidad. |
 - **Devuelve:** No aplica.
 - **Excepciones:** No aplica.
