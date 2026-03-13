@@ -12,10 +12,9 @@
         /// Configures the allowed type, default factory, and database value converter for <see cref="CId"/> identifiers in the service collection.
         /// </summary>
         /// <typeparam name="TTargetType">The type to be used for database storage of the identifier value.</typeparam>
-        /// <param name="services">The service collection to configure.</param>
-        /// <param name="defaultFactory">The default factory function for creating new <see cref="CId"/> instances.</param>
-        /// <param name="convertToDb">A function to convert a <see cref="CId"/> to the database type <typeparamref name="TTargetType"/>.</param>
-        /// <param name="convertFromDb">A function to convert the database type <typeparamref name="TTargetType"/> to a <see cref="CId"/>.</param>
+    /// <typeparam name="TDbType">The database storage type used for the identifier value.</typeparam>
+    /// <param name="services">The service collection to configure.</param>
+    /// <param name="setup">The action that configures the <see cref="CIdConfiguration{TTargetType, TDbType}"/> options.</param>
         public static void UseCId<TTargetType, TDbType>(this IServiceCollection services, Action<CIdConfiguration<TTargetType, TDbType>> setup)
         {
             var config = new CIdConfiguration<TTargetType, TDbType>();

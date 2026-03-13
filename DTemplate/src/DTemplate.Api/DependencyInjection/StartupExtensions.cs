@@ -10,8 +10,18 @@ using System.Diagnostics.CodeAnalysis;
 namespace Microsoft.Extensions.DependencyInjection
 {
     [ExcludeFromCodeCoverage]
+    /// <summary>
+    /// Provides startup service configuration extensions.
+    /// </summary>
     public static class StartupExtensions
     {
+        /// <summary>
+        /// Registers default services and middleware dependencies.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="configuration">The application configuration.</param>
+        /// <param name="environment">The hosting environment.</param>
+        /// <returns>The service collection.</returns>
         public static IServiceCollection AddDefaults(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
             var connectionString = configuration.GetConnectionString("Default");
@@ -57,6 +67,12 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
         
+        /// <summary>
+        /// Configures default middleware for the application.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
+        /// <param name="environment">The hosting environment.</param>
+        /// <returns>The application builder.</returns>
         public static IApplicationBuilder UseDefaults(this IApplicationBuilder app, IWebHostEnvironment environment)
         {
             if (environment.IsDevelopment())

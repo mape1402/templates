@@ -8,17 +8,29 @@ using DTemplate.Business.Core.Exceptions;
 
 namespace DTemplate.Api.Filters
 {
+    /// <summary>
+    /// Handles unhandled exceptions and produces a standardized error response.
+    /// </summary>
     public class GlobalExceptionFilter : IExceptionFilter
     {
         private readonly ILogger<GlobalExceptionFilter> _logger;
         private readonly ApiBehaviorOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GlobalExceptionFilter"/> class.
+        /// </summary>
+        /// <param name="logger">The logger to use for error reporting.</param>
+        /// <param name="options">The API behavior options.</param>
         public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger, IOptions<ApiBehaviorOptions> options)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options?.Value;
         }
 
+        /// <summary>
+        /// Handles an exception and sets the appropriate response.
+        /// </summary>
+        /// <param name="context">The exception context.</param>
         public void OnException(ExceptionContext context)
         {
             var errors = Array.Empty<string>();

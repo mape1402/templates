@@ -9,8 +9,15 @@
     using System.Diagnostics.CodeAnalysis;
 
     [ExcludeFromCodeCoverage]
+    /// <summary>
+    /// Provides dependency injection extensions for the business layer.
+    /// </summary>
     public static class ServicesExtensions
     {
+        /// <summary>
+        /// Registers business-layer services.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
         public static void AddBusiness(this IServiceCollection services)
         {
             services.AddScoped<IStorageReaderAdapter, StorageReaderAdapter>();
