@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Diagnostics.CodeAnalysis;
@@ -22,7 +23,19 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.Configure<MvcOptions>(opts =>
             {
-                opts.Conventions.Add(new RoutePrefixConvention(new RouteAttribute("api/")));
+                opts.Conventions.Add(new RoutePrefixConvention(new RouteAttribute("api/v{version:apiVersion}")));
+            });
+
+            services.AddApiVersioning(opts =>
+            {
+                opts.DefaultApiVersion = new ApiVersion(1, 0);
+                opts.AssumeDefaultVersionWhenUnspecified = true;
+                opts.ReportApiVersions = true;
+            })
+            .AddApiExplorer(opts =>
+            {
+                opts.GroupNameFormat = "'v'VVV";
+                opts.SubstituteApiVersionInUrl = true;
             });
 
             services.Configure<JsonOptions>(opts =>

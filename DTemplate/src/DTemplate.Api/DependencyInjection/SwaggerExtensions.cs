@@ -1,6 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Asp.Versioning.ApiExplorer;
 using DTemplate.Api.Swagger;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace DTemplate.Api.DependencyInjection
 {
@@ -9,10 +11,9 @@ namespace DTemplate.Api.DependencyInjection
     {
         internal static void AddSwaggerDefaults(this IServiceCollection services)
         {
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(opts =>
             {
-                opts.SwaggerDoc(SwaggerConstants.Docs.ApiVersion, new OpenApiInfo { Title = SwaggerConstants.Docs.ApiName, Version = SwaggerConstants.Docs.ApiVersion });
-
                 opts.ResolveConflictingActions(x => x.First());
                 opts.OperationFilter<RemoveVersionParametersFilter>();
                 opts.DocumentFilter<SetVersionInPathsFilter>();
@@ -47,7 +48,14 @@ namespace DTemplate.Api.DependencyInjection
 
                 if (env.IsDevelopment())
                 {
-                    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "DTemplate.Api v1");
+                    var provider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        opts.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            $"{SwaggerConstants.Docs.ApiName} {description.GroupName}");
+                    }
                 }
             });
         }

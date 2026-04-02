@@ -7,12 +7,27 @@
     /// </summary>
     /// <typeparam name="TTargetType">The type used for the identifier in the domain model.</typeparam>
     /// <typeparam name="TDbType">The type used for the identifier in the database.</typeparam>
-    public class CIdConfiguration<TTargetType, TDbType> 
+    public class CIdConfiguration<TTargetType, TDbType>
     {
         /// <summary>
         /// Gets or sets the default factory function for creating new <see cref="CId"/> instances.
         /// </summary>
         public Func<CId> DefaultFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the database type used by the current context.
+        /// </summary>
+        /// <remarks>This property is intended for internal use. Assign a value that is compatible with
+        /// the underlying database system to ensure correct data processing and storage.</remarks>
+        public string DbType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the function that converts an instance of TTargetType to a byte array.
+        /// </summary>
+        /// <remarks>Use this property to specify a custom serialization function for TTargetType
+        /// instances. The provided function should handle all necessary conversions and account for any edge cases
+        /// relevant to your application's requirements.</remarks>
+        public Func<TTargetType, byte[]> ToByteArrayFunction { get; set; }
 
         /// <summary>
         /// Gets or sets the expression to convert a <see cref="CId"/> to the database type <typeparamref name="TDbType"/>.
@@ -24,20 +39,6 @@
         /// </summary>
         public Expression<Func<TDbType, CId>> ConvertFromDb { get; set; }
 
-#pragma warning disable CS8632
-
-        /// <summary>
-        /// Gets or sets the expression to convert a nullable <see cref="CId"/> to a nullable database type <typeparamref name="TDbType"/>.
-        /// </summary>
-        public Expression<Func<CId?, TDbType?>> ConvertToDbNullable { get; set; }
-
-        /// <summary>
-        /// Gets or sets the expression to convert a nullable database type <typeparamref name="TDbType"/> to a nullable <see cref="CId"/>.
-        /// </summary>
-        public Expression<Func<TDbType?, CId?>> ConvertFromDbNullable { get; set; }
-
-#pragma warning restore CS8632
-
         /// <summary>
         /// Gets or sets the function used to convert a JSON string to a <see cref="CId"/> object.
         /// </summary>
@@ -48,7 +49,7 @@
         /// <summary>
         /// Gets or sets the function used to convert a JSON string to a nullable <see cref="CId"/> object.
         /// </summary>
-        public Func<string, CId?> NulleableJsonConverter { get; set; }
+        public Func<string, CId?> NullableJsonConverter { get; set; }
 
         /// <summary>
         /// Gets or sets the function used to parse a string into a <see cref="CId"/> object.
@@ -62,19 +63,13 @@
             if(ConvertToDb == null)
                 throw new InvalidOperationException("ConvertToDb must be set.");
 
-            if(ConvertFromDb == null)   
+            if(ConvertFromDb == null)
                 throw new InvalidOperationException("ConvertFromDb must be set.");
-
-            if(ConvertToDbNullable == null)
-                throw new InvalidOperationException("ConvertToDbNullable must be set.");
-
-            if(ConvertFromDbNullable == null)
-                throw new InvalidOperationException("ConvertFromDbNullable must be set.");
 
             if(JsonConverter == null)
                 throw new InvalidOperationException("JsonConverter must be set.");
 
-            if(NulleableJsonConverter == null)
+            if(NullableJsonConverter == null)
                 throw new InvalidOperationException("NulleableJsonConverter must be set.");
 
             if(DefaultFactory == null)

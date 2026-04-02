@@ -3,8 +3,10 @@
   <PropertyGroup>
   </PropertyGroup>
 
-  <ItemGroup> 
-    <PackageReference Include="Krackend.Sagas.Orchestration" /> 
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+    <PackageReference Include="Krackend.Sagas.Orchestration" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Ulid" />

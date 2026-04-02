@@ -18,7 +18,7 @@
         public override CId? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var value = reader.GetString();
-            return CIdMetadata.NulleableJsonConverter(value);
+            return CIdMetadata.NullableJsonConverter(value);
         }
 
         /// <summary>

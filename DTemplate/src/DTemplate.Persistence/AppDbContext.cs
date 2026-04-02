@@ -23,11 +23,16 @@ namespace DTemplate.Persistence
             {
                 foreach (var property in entityType.GetProperties())
                 {
-                    if (property.ClrType == typeof(CId))
+                    var clrType = property.ClrType;
+                    var underlyingType = Nullable.GetUnderlyingType(clrType);
+
+                    if (clrType == typeof(CId) || underlyingType == typeof(CId))
+                    {
                         property.SetValueConverter(CIdMetadata.DbConverter);
 
-                    if (property.ClrType == typeof(CId?))
-                        property.SetValueConverter(CIdMetadata.DbNulleableConverter);
+                        if(CIdMetadata.HasDbType)
+                            property.SetColumnType(CIdMetadata.DbType);
+                    }
                 }
 
             }

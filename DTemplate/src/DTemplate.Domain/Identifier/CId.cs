@@ -7,20 +7,14 @@
     /// Represents a strongly-typed identifier with a value of a specific allowed type.
     /// </summary>
     [TypeConverter(typeof(CIdTypeConverter))]
-    public struct CId : IEquatable<CId>
+    public readonly struct CId : IEquatable<CId>
     {
         /// <summary>
-        /// Indicates whether the identifier is empty.
+        /// Gets a value indicating whether the object is ready for use.
         /// </summary>
-        private readonly bool _isEmpty = true;
-
-        /// <summary>
-        /// Initializes a new empty <see cref="CId"/>.
-        /// </summary>
-        public CId()
-        {
-            _isEmpty = true;
-        }
+        /// <remarks>This property reflects the readiness state of the object, which may affect its
+        /// ability to perform operations.</remarks>
+        private readonly bool _isReady;
 
         /// <summary>
         /// Initializes a new <see cref="CId"/> with the specified value.
@@ -29,11 +23,14 @@
         /// <exception cref="ArgumentException">Thrown if the value is not of the allowed type.</exception>
         public CId(object value)
         {
-            if(value.GetType() != CIdMetadata.AllowedType)
+            if(value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (value.GetType() != CIdMetadata.AllowedType)
                 throw new ArgumentException($"Value must be of type {CIdMetadata.AllowedType}.");
 
             Value = value;
-            _isEmpty = false;
+            _isReady = true;
         }
 
         /// <summary>
@@ -46,7 +43,21 @@
         /// </summary>
         /// <remarks>This property returns a new instance of <see cref="CId"/> with default values,  which
         /// can be used to represent a non-initialized or empty state.</remarks>
-        public static CId Empty => new CId();
+        public static CId Empty => default;
+
+        /// <summary>
+        /// Converts the current value to its byte array representation.
+        /// </summary>
+        /// <remarks>Ensure that the object is in a ready state before calling this method to avoid a null
+        /// return value.</remarks>
+        /// <returns>A byte array that represents the current value, or null if the object is not ready or the value is null.</returns>
+        public byte[] ToByteArray()
+        {
+            if (!_isReady || Value is null)
+                return null;
+
+            return CIdMetadata.ToByteArrayFunction(Value);
+        }
 
         /// <summary>
         /// Creates a new <see cref="CId"/> using the default factory.
@@ -64,6 +75,29 @@
             => CIdMetadata.ParseFunction(value);
 
         /// <summary>
+        /// Tries to convert the specified string representation of a CId to its equivalent CId object.
+        /// </summary>
+        /// <remarks>This method handles exceptions internally and sets the result to Empty if the
+        /// conversion fails.</remarks>
+        /// <param name="value">The string representation of the CId to convert.</param>
+        /// <param name="result">When this method returns, contains the CId equivalent of the string representation, or Empty if the
+        /// conversion failed.</param>
+        /// <returns>true if the conversion succeeded; otherwise, false.</returns>
+        public static bool TryParse(string value, out CId result)
+        {
+            try
+            {
+                result = Parse(value);
+                return true;
+            }
+            catch
+            {
+                result = Empty;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Casts the value of the identifier to the specified type.
         /// </summary>
         /// <typeparam name="T">The type to cast to.</typeparam>
@@ -71,7 +105,7 @@
         /// <exception cref="InvalidCastException">Thrown if the value cannot be cast to the specified type or the identifier is empty.</exception>
         public T Cast<T>()
         {
-            if (_isEmpty || Value is not T castValue)
+            if (!_isReady || Value is not T castValue)
                 throw new InvalidCastException($"Value cannot be converted to {typeof(T)}.");
 
             return castValue;
@@ -94,7 +128,7 @@
             if (obj is not CId other)
                 return false;
 
-            if (other._isEmpty && _isEmpty)
+            if (!other._isReady && !_isReady)
                 return true;
 
             if (Value is null && other.Value is null)
@@ -119,7 +153,7 @@
         /// </summary>
         /// <returns>A hash code for the identifier.</returns>
         public override int GetHashCode()
-            => _isEmpty ? default : Value.GetHashCode();
+            => !_isReady ? default : Value.GetHashCode();
 
         /// <summary>
         /// Determines whether two <see cref="CId"/> instances are equal.

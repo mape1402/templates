@@ -23,15 +23,13 @@
             config.ValidateAndThrow();
 
             CIdMetadata.AllowedType = typeof(TTargetType);
+            CIdMetadata.DbType = config.DbType;
             CIdMetadata.DefaultFactory = config.DefaultFactory;
+            CIdMetadata.ToByteArrayFunction = (v) => config.ToByteArrayFunction((TTargetType)v);
             CIdMetadata.JsonConverter = config.JsonConverter;
-            CIdMetadata.NulleableJsonConverter = config.NulleableJsonConverter;
+            CIdMetadata.NullableJsonConverter = config.NullableJsonConverter;
             CIdMetadata.ParseFunction = config.ParseFunction;
             CIdMetadata.DbConverter = new ValueConverter<CId, TDbType>(config.ConvertToDb, config.ConvertFromDb);
-
-#pragma warning disable CS8632
-            CIdMetadata.DbNulleableConverter = new ValueConverter<CId?, TDbType?>(config.ConvertToDbNullable, config.ConvertFromDbNullable);
-#pragma warning restore CS8632
         }
     }
 }

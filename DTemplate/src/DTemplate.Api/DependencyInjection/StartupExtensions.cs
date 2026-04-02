@@ -53,10 +53,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 config.DefaultFactory = () => new CId(Ulid.NewUlid());
                 config.ConvertToDb = id => id.ToString();
                 config.ConvertFromDb = value => CId.Parse(value);
-                config.ConvertToDbNullable = id => id == null ? null : id.ToString();
-                config.ConvertFromDbNullable = value => string.IsNullOrWhiteSpace(null) ? null : CId.Parse(value);
                 config.JsonConverter = value => string.IsNullOrEmpty(value) ? new CId(Ulid.Empty) : CId.Parse(value);
-                config.NulleableJsonConverter = value => string.IsNullOrEmpty(value) ? null : CId.Parse(value);
+                config.NullableJsonConverter = value => string.IsNullOrEmpty(value) ? null : CId.Parse(value);
                 config.ParseFunction = value => new CId(Ulid.Parse(value));
             });
 
