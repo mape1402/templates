@@ -10,7 +10,7 @@
     <PackageReference Update="FluentValidation" Version="12.0.0" />
     <PackageReference Update="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Update="Krackend.Sagas.Orchestration" Version="0.0.1" />
-    <PackageReference Update="AutoMapper" Version="15.0.1" />
+    <PackageReference Update="AutoMapper" Version="16.1.1" />
     <PackageReference Update="Sieve" Version="2.5.5" />
     <PackageReference Update="Ulid" Version="1.4.1" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7"/>
