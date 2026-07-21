@@ -1,20 +1,20 @@
 ﻿namespace DTemplate.Business.Core.Infrastructure
 {
-    using AutoMapper;
+    using OctoMap;
     using DTemplate.Business.Core.Services;
 
     /// <summary>
-    /// Provides an implementation of <see cref="IMapperAdapter"/> using AutoMapper for object mapping.
+    /// Provides an implementation of <see cref="IMapperAdapter"/> using OctoMap for object mapping.
     /// </summary>
     internal class MapperAdapter : IMapperAdapter
     {
-        private readonly IMapper _mapper;
+        private readonly IOctoMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapperAdapter"/> class.
         /// </summary>
-        /// <param name="mapper">The AutoMapper instance to use for mapping.</param>
-        public MapperAdapter(IMapper mapper)
+        /// <param name="mapper">The OctoMap instance to use for mapping.</param>
+        public MapperAdapter(IOctoMapper mapper)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
@@ -30,7 +30,7 @@
         public ValueTask<TDestination> MapAsync<TSource, TDestination>(TSource source, CancellationToken cancellationToken = default)
             where TSource : class
             where TDestination : class
-            => ValueTask.FromResult(_mapper.Map<TDestination>(source));
+            => ValueTask.FromResult(_mapper.Map<TSource, TDestination>(source));
 
         /// <summary>
         /// Asynchronously maps the source object onto an existing destination object, updating its values.

@@ -5,6 +5,7 @@
     using DTemplate.Business.Core.Infrastructure;
     using DTemplate.Business.Core.Services;
     using DTemplate.Business.MappingProfiles;
+    using OctoMap;
     using Sieve.Services;
     using System.Diagnostics.CodeAnalysis;
 
@@ -27,7 +28,13 @@
 
             services.AddValidatorsFromAssembly(typeof(Constants).Assembly);
 
-            services.AddAutoMapper(config => config.AddProfile<MappingProfile>());
+            services.AddOctoMap(registration =>
+            {
+                registration.Options.EnableRuntimeImplicitMaps = true;
+                registration.Options.DuplicateMapPolicy = DuplicateMapPolicy.Throw;
+                registration.AddProfile<MappingProfile>();
+                registration.AddMaps(typeof(Constants).Assembly);
+            });
 
             services.AddSingleton<ISieveProcessor, SieveProcessor>();
         }

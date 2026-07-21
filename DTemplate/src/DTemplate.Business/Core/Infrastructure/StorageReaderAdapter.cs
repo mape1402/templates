@@ -1,11 +1,10 @@
 ﻿namespace DTemplate.Business.Core.Infrastructure
 {
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Microsoft.EntityFrameworkCore;
     using DTemplate.Business.Core.Services;
     using DTemplate.Domain.Contracts;
     using DTemplate.Persistence.Abstractions;
+    using OctoMap;
     using Sieve.Models;
     using Sieve.Services;
 
@@ -16,15 +15,15 @@
     {
         private readonly ISieveProcessor _sieveProcessor;
         private readonly IDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly IOctoMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StorageReaderAdapter"/> class.
         /// </summary>
         /// <param name="sieveProcessor">The Sieve processor for applying filters and sorts.</param>
         /// <param name="dbContext">The database context for entity access.</param>
-        /// <param name="mapper">The AutoMapper instance for projection.</param>
-        public StorageReaderAdapter(ISieveProcessor sieveProcessor, IDbContext dbContext, IMapper mapper)
+        /// <param name="mapper">The OctoMap instance for projection.</param>
+        public StorageReaderAdapter(ISieveProcessor sieveProcessor, IDbContext dbContext, IOctoMapper mapper)
         {
             _sieveProcessor = sieveProcessor ?? throw new ArgumentNullException(nameof(sieveProcessor));
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -64,7 +63,7 @@
                 return entity as TExpected;
             }
 
-            return await query.ProjectTo<TExpected>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+            return await query.ProjectTo<TExpected>(_mapper.ProjectionBuilder).FirstOrDefaultAsync(cancellationToken);
         }
 
         /// <summary>
@@ -100,7 +99,7 @@
                 results = entities.Cast<TExpected>();
             }
             else
-                results = await pagedQuery.query.ProjectTo<TExpected>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+                results = await pagedQuery.query.ProjectTo<TExpected>(_mapper.ProjectionBuilder).ToListAsync(cancellationToken);
 
             return new BatchResult<TExpected>
             {

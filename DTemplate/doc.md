@@ -650,7 +650,7 @@ Biblioteca de dominio de negocio que implementa patrones CQRS con `Pelican.Media
 ---
 
 ### DTemplate.Business MappingProfile
-**Descripción:** Perfil base de AutoMapper.
+**Descripción:** Perfil base de OctoMap.
 
 **Índice de métodos**
 - [`MappingProfile`](#dtemplate-business-mappingprofile-ctor)
@@ -664,7 +664,7 @@ Biblioteca de dominio de negocio que implementa patrones CQRS con `Pelican.Media
 - **Excepciones:** No lanza explícitamente.
 - **Ejemplo:**
 ```csharp
-services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+services.AddOctoMap(registration => registration.AddProfile<MappingProfile>());
 ```
 
 #### <a id="dtemplate-business-mappingprofile-opportunitymapping"></a>`OpportunityMapping()`
@@ -994,7 +994,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 ---
 
 ### DTemplate.Business MapperAdapter
-**Descripción:** Implementación de `IMapperAdapter` usando AutoMapper.
+**Descripción:** Implementación de `IMapperAdapter` usando OctoMap.
 
 **Índice de métodos**
 - [`MapperAdapter`](#dtemplate-business-mapperadapter-ctor)
@@ -1002,13 +1002,13 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - [`UpdateMapAsync<TSource, TDestination>`](#dtemplate-business-mapperadapter-updatemapasync)
 
 **Métodos**
-#### <a id="dtemplate-business-mapperadapter-ctor"></a>`MapperAdapter(IMapper mapper)`
-- **Descripción:** Inicializa el adaptador con una instancia de AutoMapper.
+#### <a id="dtemplate-business-mapperadapter-ctor"></a>`MapperAdapter(IOctoMapper mapper)`
+- **Descripción:** Inicializa el adaptador con una instancia de OctoMap.
 - **Parámetros**
 
 | Nombre | Tipo | Descripción |
 | --- | --- | --- |
-| `mapper` | `IMapper` | Motor de mapeo. |
+| `mapper` | `IOctoMapper` | Motor de mapeo. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si `mapper` es nulo.
 
@@ -1049,7 +1049,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 - [`ApplyPaging<TEntity>`](#dtemplate-business-storagereaderadapter-applypaging)
 
 **Métodos**
-#### <a id="dtemplate-business-storagereaderadapter-ctor"></a>`StorageReaderAdapter(ISieveProcessor sieveProcessor, IDbContext dbContext, IMapper mapper)`
+#### <a id="dtemplate-business-storagereaderadapter-ctor"></a>`StorageReaderAdapter(ISieveProcessor sieveProcessor, IDbContext dbContext, IOctoMapper mapper)`
 - **Descripción:** Inicializa el adaptador con dependencias de filtrado, acceso a datos y mapeo.
 - **Parámetros**
 
@@ -1057,7 +1057,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 | --- | --- | --- |
 | `sieveProcessor` | `ISieveProcessor` | Motor Sieve para filtros/orden. |
 | `dbContext` | `IDbContext` | Contexto de datos. |
-| `mapper` | `IMapper` | Motor de mapeo. |
+| `mapper` | `IOctoMapper` | Motor de mapeo. |
 - **Devuelve:** No aplica.
 - **Excepciones:** `ArgumentNullException` si alguna dependencia es nula.
 
