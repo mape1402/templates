@@ -643,7 +643,7 @@ Biblioteca de dominio de negocio que implementa patrones CQRS con `Pelican.Media
 **Índice de métodos:** No aplica.
 
 **Casos de uso:**
-- Referenciar ensamblado desde `AddPelican` o `AddValidatorsFromAssembly`.
+- Referenciar ensamblado desde `AddPelican` o `AddCrabalidator`.
 
 **Propiedades y métodos:** No aplica.
 
@@ -963,7 +963,7 @@ var batch = await reader.GetManyAsync<Entity, Dto>(criteria);
 ---
 
 ### DTemplate.Business ValidatorAdapter
-**Descripción:** Implementación de `IValidatorAdapter` con FluentValidation.
+**Descripción:** Implementación de `IValidatorAdapter` con Crabalidator.
 
 **Índice de métodos**
 - [`ValidatorAdapter`](#dtemplate-business-validatoradapter-ctor)

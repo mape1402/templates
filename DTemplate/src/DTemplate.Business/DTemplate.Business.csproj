@@ -21,10 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="OctoMap" />
     <PackageReference Include="OctoMap.Analyzers" PrivateAssets="all" />
-    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Crabalidator" />
     <PackageReference Include="Pelican.Mediator" />
     <PackageReference Include="Pigeon.Messaging" />
     <PackageReference Include="Sieve" />

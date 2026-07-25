@@ -1,4 +1,3 @@
-﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.WebUtilities;
@@ -38,8 +37,8 @@ namespace DTemplate.Api.Filters
 
             switch (context.Exception)
             {
-                case ValidationException vEx:
-                    errors = vEx.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToArray();
+                case ModelValidationException vEx:
+                    errors = vEx.Errors.ToArray();
                     code = HttpStatusCode.BadRequest;
                     break;
 

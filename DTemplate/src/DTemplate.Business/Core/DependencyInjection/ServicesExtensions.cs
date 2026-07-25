@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection
 {
-    using FluentValidation;
+    using Crabalidator.DependencyInjection;
     using DTemplate.Business;
     using DTemplate.Business.Core.Infrastructure;
     using DTemplate.Business.Core.Services;
@@ -26,7 +26,7 @@
             services.AddScoped<IMapperAdapter, MapperAdapter>();
             services.AddScoped<IValidatorAdapter, ValidatorAdapter>();
 
-            services.AddValidatorsFromAssembly(typeof(Constants).Assembly);
+            services.AddCrabalidator(typeof(Constants).Assembly);
 
             services.AddOctoMap(registration =>
             {
