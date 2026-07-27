@@ -86,12 +86,11 @@
         /// <exception cref="NotFoundException">Thrown if the entity is not found.</exception>
         protected virtual async Task<TEntity> GetEntityAsync(TRequest request, CancellationToken cancellationToken)
         {
-            var criteria = new GetOneCriteria<TEntity>
-            {
-                FiltersExpression = e => e.Id == request.Id
-            };
-
-            return await StorageReaderAdapter.GetOneAsync<TEntity, TEntity>(criteria, cancellationToken)
+            return await StorageReaderAdapter
+                .For<TEntity>()
+                .AsTracking()
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync<TEntity>(cancellationToken)
                 ?? throw new NotFoundException(typeof(TEntity).Name, request.Id.ToString());
         }
 
@@ -127,7 +126,7 @@
         /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
         /// <returns>A task representing the asynchronous update operation.</returns>
         protected virtual Task UpdateEntityAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
-            => StorageWriterAdapter.UpdateAsync(entity, cancellationToken);
+            => StorageWriterAdapter.SaveChangesAsync(cancellationToken);
 
         /// <summary>
         /// Maps the updated entity to a response using the mapper adapter. Must be implemented by derived classes.
@@ -214,12 +213,11 @@
         /// <exception cref="NotFoundException">Thrown if the entity is not found.</exception>
         protected virtual async Task<TEntity> GetEntityAsync(TRequest request, CancellationToken cancellationToken)
         {
-            var criteria = new GetOneCriteria<TEntity>
-            {
-                FiltersExpression = e => e.Id == request.Id 
-            };
-
-            return await StorageReaderAdapter.GetOneAsync<TEntity, TEntity>(criteria, cancellationToken)
+            return await StorageReaderAdapter
+                .For<TEntity>()
+                .AsTracking()
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync<TEntity>(cancellationToken)
                 ?? throw new NotFoundException(typeof(TEntity).Name, request.Id.ToString());
         }
 
@@ -255,6 +253,6 @@
         /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
         /// <returns>A task representing the asynchronous update operation.</returns>
         protected virtual Task UpdateEntityAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
-            => StorageWriterAdapter.UpdateAsync(entity, cancellationToken);
+            => StorageWriterAdapter.SaveChangesAsync(cancellationToken);
     }
 }

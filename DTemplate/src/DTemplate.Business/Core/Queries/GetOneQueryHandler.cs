@@ -64,13 +64,11 @@
         /// <returns>A task representing the asynchronous operation, with the response as the result.</returns>
         public virtual async Task<TResponse> Handle(TQuery request, CancellationToken cancellationToken = default)
         {
-            var criteria = new GetOneCriteria<TEntity>
-            {
-                FiltersExpression = GetFilterExpression(request),
-                UseTracking = false
-            };
-
-            return await StorageReaderAdapter.GetOneAsync<TEntity, TResponse>(criteria, cancellationToken)
+            return await StorageReaderAdapter
+                .For<TEntity>()
+                .AsNoTracking()
+                .Where(GetFilterExpression(request))
+                .FirstOrDefaultAsync<TResponse>(cancellationToken)
                 ?? throw new NotFoundException(typeof(TEntity).Name, request.Value?.ToString() ?? "Unknown");
         }
 

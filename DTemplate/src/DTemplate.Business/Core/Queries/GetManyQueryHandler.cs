@@ -68,16 +68,15 @@
         /// <returns>A task representing the asynchronous operation, with a collection of responses as the result.</returns>
         public virtual async Task<IEnumerable<TResponse>> Handle(TQuery request, CancellationToken cancellationToken = default)
         {
-            var criteria = new GetManyCriteria<TEntity>
-            {
-                UseTracking = false,
-                Filters = request.Filters,
-                Sorts = request.Sorts,
-                FiltersExpression = GetFilterExpression(request),
-                SortingExpression = GetSortingExpression(request)
-            };
+            var batch = await StorageReaderAdapter
+                .For<TEntity>()
+                .AsNoTracking()
+                .Where(GetFilterExpression(request))
+                .FilterBy(request.Filters)
+                .SortBy(GetSortingExpression(request))
+                .SortBy(request.Sorts)
+                .ToBatchAsync<TResponse>(cancellationToken);
 
-            var batch = await StorageReaderAdapter.GetManyAsync<TEntity, TResponse>(criteria, cancellationToken);
             return batch.AsEnumerable();
         }
 

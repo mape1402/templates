@@ -84,12 +84,11 @@
         /// <exception cref="NotFoundException">Thrown if the entity is not found.</exception>
         protected virtual async Task<TEntity> GetEntityAsync(TRequest request, CancellationToken cancellationToken)
         {
-            var criteria = new GetOneCriteria<TEntity>
-            {
-                FiltersExpression = e => e.Id == request.Id
-            };
-
-            return await StorageReaderAdapter.GetOneAsync<TEntity, TEntity>(criteria, cancellationToken)
+            return await StorageReaderAdapter
+                .For<TEntity>()
+                .AsTracking()
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync<TEntity>(cancellationToken)
                 ?? throw new NotFoundException(typeof(TEntity).Name, request.Id.ToString());
         }
 
@@ -114,8 +113,11 @@
         /// <param name="entity">The entity to delete.</param>
         /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
         /// <returns>A task representing the asynchronous delete operation.</returns>
-        protected virtual Task DeleteEntityAsync(TEntity entity, CancellationToken cancellationToken)
-            => StorageWriterAdapter.DeleteAsync(entity, cancellationToken);
+        protected virtual async Task DeleteEntityAsync(TEntity entity, CancellationToken cancellationToken)
+        {
+            StorageWriterAdapter.Remove(entity);
+            await StorageWriterAdapter.SaveChangesAsync(cancellationToken);
+        }
 
         /// <summary>
         /// Builds the response after the entity has been deleted.
@@ -201,12 +203,11 @@
         /// <exception cref="NotFoundException">Thrown if the entity is not found.</exception>
         protected virtual async Task<TEntity> GetEntityAsync(TRequest request, CancellationToken cancellationToken)
         {
-            var criteria = new GetOneCriteria<TEntity>
-            {
-                FiltersExpression = e => e.Id == request.Id
-            };
-
-            return await StorageReaderAdapter.GetOneAsync<TEntity, TEntity>(criteria, cancellationToken)
+            return await StorageReaderAdapter
+                .For<TEntity>()
+                .AsTracking()
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync<TEntity>(cancellationToken)
                 ?? throw new NotFoundException(typeof(TEntity).Name, request.Id.ToString());
         }
 
@@ -231,7 +232,10 @@
         /// <param name="entity">The entity to delete.</param>
         /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
         /// <returns>A task representing the asynchronous delete operation.</returns>
-        protected virtual Task DeleteEntityAsync(TEntity entity, CancellationToken cancellationToken)
-            => StorageWriterAdapter.DeleteAsync(entity, cancellationToken);
+        protected virtual async Task DeleteEntityAsync(TEntity entity, CancellationToken cancellationToken)
+        {
+            StorageWriterAdapter.Remove(entity);
+            await StorageWriterAdapter.SaveChangesAsync(cancellationToken);
+        }
     }
 }

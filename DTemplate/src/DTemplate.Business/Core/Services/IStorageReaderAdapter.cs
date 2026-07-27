@@ -148,6 +148,13 @@
     public interface IStorageReaderAdapter
     {
         /// <summary>
+        /// Starts a fluent read operation for the specified entity type.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <returns>A fluent read set for the entity type.</returns>
+        IStorageReadSet<TEntity> For<TEntity>() where TEntity : BaseEntity;
+
+        /// <summary>
         /// Asynchronously retrieves a single entity matching the specified criteria.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
@@ -169,6 +176,65 @@
         /// <returns>A task representing the asynchronous operation, with a batch result containing the expected results as the result.</returns>
         Task<BatchResult<TExpected>> GetManyAsync<TEntity, TExpected>(GetManyCriteria<TEntity> criteria, CancellationToken cancellationToken = default)
             where TEntity : BaseEntity
+            where TExpected : class;
+    }
+
+    /// <summary>
+    /// Provides a fluent, provider-neutral read surface for common entity queries.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
+    public interface IStorageReadSet<TEntity> where TEntity : BaseEntity
+    {
+        /// <summary>
+        /// Applies a typed filter.
+        /// </summary>
+        IStorageReadSet<TEntity> Where(Expression<Func<TEntity, bool>> filter);
+
+        /// <summary>
+        /// Applies string-based filters supported by the active storage provider.
+        /// </summary>
+        IStorageReadSet<TEntity> FilterBy(string filters);
+
+        /// <summary>
+        /// Applies an ascending typed sort.
+        /// </summary>
+        IStorageReadSet<TEntity> SortBy(Expression<Func<TEntity, object>> sort);
+
+        /// <summary>
+        /// Applies a descending typed sort.
+        /// </summary>
+        IStorageReadSet<TEntity> SortByDescending(Expression<Func<TEntity, object>> sort);
+
+        /// <summary>
+        /// Applies string-based sorting supported by the active storage provider.
+        /// </summary>
+        IStorageReadSet<TEntity> SortBy(string sorts);
+
+        /// <summary>
+        /// Enables tracking for the read operation.
+        /// </summary>
+        IStorageReadSet<TEntity> AsTracking();
+
+        /// <summary>
+        /// Disables tracking for the read operation.
+        /// </summary>
+        IStorageReadSet<TEntity> AsNoTracking();
+
+        /// <summary>
+        /// Applies paging.
+        /// </summary>
+        IStorageReadSet<TEntity> Page(int? pageNumber, int? pageSize);
+
+        /// <summary>
+        /// Retrieves the first matching item projected to the expected type.
+        /// </summary>
+        Task<TExpected> FirstOrDefaultAsync<TExpected>(CancellationToken cancellationToken = default)
+            where TExpected : class;
+
+        /// <summary>
+        /// Retrieves a batch projected to the expected type.
+        /// </summary>
+        Task<BatchResult<TExpected>> ToBatchAsync<TExpected>(CancellationToken cancellationToken = default)
             where TExpected : class;
     }
 }

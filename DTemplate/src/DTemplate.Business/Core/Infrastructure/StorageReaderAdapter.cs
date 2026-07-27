@@ -7,6 +7,7 @@
     using OctoMap;
     using Sieve.Models;
     using Sieve.Services;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// Provides an implementation of <see cref="IStorageReaderAdapter"/> for reading entities from storage with support for filtering, sorting, and paging.
@@ -29,6 +30,10 @@
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
+
+        /// <inheritdoc/>
+        public IStorageReadSet<TEntity> For<TEntity>() where TEntity : BaseEntity
+            => new StorageReadSet<TEntity>(this);
 
         /// <summary>
         /// Asynchronously retrieves a single entity matching the specified criteria.
@@ -180,6 +185,83 @@
             var pageNumber = criteria.PageNumber.Value > pageCount ? pageCount : criteria.PageNumber.Value;
 
             return (source.Skip((pageNumber - 1) * pageSize).Take(pageSize), rowCount, pageCount, pageNumber, pageSize);
+        }
+
+        private sealed class StorageReadSet<TEntity> : IStorageReadSet<TEntity> where TEntity : BaseEntity
+        {
+            private readonly StorageReaderAdapter _reader;
+            private readonly GetManyCriteria<TEntity> _criteria = new() { UseTracking = false };
+
+            public StorageReadSet(StorageReaderAdapter reader)
+            {
+                _reader = reader ?? throw new ArgumentNullException(nameof(reader));
+            }
+
+            public IStorageReadSet<TEntity> Where(Expression<Func<TEntity, bool>> filter)
+            {
+                _criteria.FiltersExpression = filter;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> FilterBy(string filters)
+            {
+                _criteria.Filters = filters;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> SortBy(Expression<Func<TEntity, object>> sort)
+            {
+                _criteria.SortingExpression = sort;
+                _criteria.AscendentSort = true;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> SortByDescending(Expression<Func<TEntity, object>> sort)
+            {
+                _criteria.SortingExpression = sort;
+                _criteria.AscendentSort = false;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> SortBy(string sorts)
+            {
+                _criteria.Sorts = sorts;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> AsTracking()
+            {
+                _criteria.UseTracking = true;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> AsNoTracking()
+            {
+                _criteria.UseTracking = false;
+                return this;
+            }
+
+            public IStorageReadSet<TEntity> Page(int? pageNumber, int? pageSize)
+            {
+                _criteria.PageNumber = pageNumber;
+                _criteria.PageSize = pageSize;
+                return this;
+            }
+
+            public Task<TExpected> FirstOrDefaultAsync<TExpected>(CancellationToken cancellationToken = default)
+                where TExpected : class
+            {
+                return _reader.GetOneAsync<TEntity, TExpected>(new GetOneCriteria<TEntity>
+                {
+                    FiltersExpression = _criteria.FiltersExpression,
+                    Filters = _criteria.Filters,
+                    UseTracking = _criteria.UseTracking
+                }, cancellationToken);
+            }
+
+            public Task<BatchResult<TExpected>> ToBatchAsync<TExpected>(CancellationToken cancellationToken = default)
+                where TExpected : class
+                => _reader.GetManyAsync<TEntity, TExpected>(_criteria, cancellationToken);
         }
     }
 }
