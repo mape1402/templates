@@ -110,8 +110,11 @@
         /// <param name="entity">The entity to save.</param>
         /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
         /// <returns>A Task representing the asynchronous save operation.</returns>
-        protected virtual Task SaveEntityAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
-            => StorageWriterAdapter.SaveAsync(entity, cancellationToken);
+        protected virtual async Task SaveEntityAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
+        {
+            await StorageWriterAdapter.AddAsync(entity, cancellationToken);
+            await StorageWriterAdapter.SaveChangesAsync(cancellationToken);
+        }
 
         /// <summary>
         /// Maps the entity to a response using the mapper adapter or retrieves a projection from storage if <see cref="UseProjectionFromStorage"/> is <c>true</c>.
@@ -122,11 +125,11 @@
         /// <returns>A ValueTask representing the asynchronous mapping operation, with the mapped response as the result.</returns>
         protected virtual async ValueTask<TResponse> MapToResponseAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
             => UseProjectionFromStorage ?
-               await StorageReaderAdapter.GetOneAsync<TEntity, TResponse>(new GetOneCriteria<TEntity>
-               {
-                   FiltersExpression = e => e.Id == entity.Id,
-                   UseTracking = false,
-               }, cancellationToken) :
+               await StorageReaderAdapter
+                   .For<TEntity>()
+                   .AsNoTracking()
+                   .Where(e => e.Id == entity.Id)
+                   .FirstOrDefaultAsync<TResponse>(cancellationToken) :
                await MapperAdapter.MapAsync<TEntity, TResponse>(entity, cancellationToken);
     }
 
@@ -219,7 +222,10 @@
         /// <param name="entity">The entity to save.</param>
         /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
         /// <returns>A Task representing the asynchronous save operation.</returns>
-        protected virtual Task SaveEntityAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
-            => StorageWriterAdapter.SaveAsync(entity, cancellationToken);
+        protected virtual async Task SaveEntityAsync(TRequest request, TEntity entity, CancellationToken cancellationToken)
+        {
+            await StorageWriterAdapter.AddAsync(entity, cancellationToken);
+            await StorageWriterAdapter.SaveChangesAsync(cancellationToken);
+        }
     }
 }

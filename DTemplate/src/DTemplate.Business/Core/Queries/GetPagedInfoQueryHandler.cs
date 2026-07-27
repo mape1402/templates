@@ -111,18 +111,15 @@
         /// <returns>A task representing the asynchronous operation, with a paged response as the result.</returns>
         public async Task<PagedResponse<TResponse>> Handle(TQuery request, CancellationToken cancellationToken = default)
         {
-            var criteria = new GetManyCriteria<TEntity>
-            {
-                FiltersExpression = GetFiltersExpression(request),
-                SortingExpression = GetSortingExpression(request),
-                Filters = request.PagedSettings.Filters,
-                Sorts = string.IsNullOrWhiteSpace(request.PagedSettings.Sorts) ? DefaultSorts : request.PagedSettings.Sorts,
-                PageSize = request.PagedSettings.PageSize ?? DefaultPageSize,
-                PageNumber = request.PagedSettings.PageNumber ?? DefaultPageNumber,
-                UseTracking = false
-            };
-
-            var batch = await StorageReaderAdapter.GetManyAsync<TEntity, TResponse>(criteria, cancellationToken);
+            var batch = await StorageReaderAdapter
+                .For<TEntity>()
+                .AsNoTracking()
+                .Where(GetFiltersExpression(request))
+                .FilterBy(request.PagedSettings.Filters)
+                .SortBy(GetSortingExpression(request))
+                .SortBy(string.IsNullOrWhiteSpace(request.PagedSettings.Sorts) ? DefaultSorts : request.PagedSettings.Sorts)
+                .Page(request.PagedSettings.PageNumber ?? DefaultPageNumber, request.PagedSettings.PageSize ?? DefaultPageSize)
+                .ToBatchAsync<TResponse>(cancellationToken);
 
             return new PagedResponse<TResponse>
             {

@@ -20,6 +20,46 @@
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        /// <inheritdoc/>
+        public async ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : BaseEntity
+        {
+            await _dbContext.AddAsync(entity, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : BaseEntity
+        {
+            return _dbContext.AddRangeAsync(entities, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public void Update<TEntity>(TEntity entity) where TEntity : BaseEntity
+        {
+            _dbContext.Update(entity);
+        }
+
+        /// <inheritdoc/>
+        public void UpdateRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : BaseEntity
+        {
+            _dbContext.UpdateRange(entities);
+        }
+
+        /// <inheritdoc/>
+        public void Remove<TEntity>(TEntity entity) where TEntity : BaseEntity
+        {
+            _dbContext.Set<TEntity>().Remove(entity);
+        }
+
+        /// <inheritdoc/>
+        public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : BaseEntity
+        {
+            _dbContext.RemoveRange(entities);
+        }
+
+        /// <inheritdoc/>
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+            => _dbContext.SaveChangesAsync(cancellationToken);
+
         /// <summary>
         /// Asynchronously saves the specified entity to the database.
         /// </summary>
@@ -29,8 +69,8 @@
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task SaveAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : BaseEntity
         {
-            await _dbContext.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await AddAsync(entity, cancellationToken);
+            await SaveChangesAsync(cancellationToken);
         }
 
         /// <summary>
@@ -42,7 +82,7 @@
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task UpdateAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : BaseEntity
         {
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await SaveChangesAsync(cancellationToken);
         }
 
         /// <summary>
@@ -54,8 +94,8 @@
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task DeleteAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : BaseEntity
         {
-            _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            Remove(entity);
+            await SaveChangesAsync(cancellationToken);
         }
     }
 }

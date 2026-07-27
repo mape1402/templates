@@ -148,6 +148,13 @@
     public interface IStorageReaderAdapter
     {
         /// <summary>
+        /// Starts a fluent read operation for the specified entity type.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <returns>A fluent read set for the entity type.</returns>
+        IStorageReadSet<TEntity> For<TEntity>() where TEntity : BaseEntity;
+
+        /// <summary>
         /// Asynchronously retrieves a single entity matching the specified criteria.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
@@ -169,6 +176,86 @@
         /// <returns>A task representing the asynchronous operation, with a batch result containing the expected results as the result.</returns>
         Task<BatchResult<TExpected>> GetManyAsync<TEntity, TExpected>(GetManyCriteria<TEntity> criteria, CancellationToken cancellationToken = default)
             where TEntity : BaseEntity
+            where TExpected : class;
+    }
+
+    /// <summary>
+    /// Provides a fluent, provider-neutral read surface for common entity queries.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
+    public interface IStorageReadSet<TEntity> where TEntity : BaseEntity
+    {
+        /// <summary>
+        /// Applies a typed filter.
+        /// </summary>
+        /// <param name="filter">The expression used to filter the entity set.</param>
+        /// <returns>The current read set with the filter applied.</returns>
+        IStorageReadSet<TEntity> Where(Expression<Func<TEntity, bool>> filter);
+
+        /// <summary>
+        /// Applies string-based filters supported by the active storage provider.
+        /// </summary>
+        /// <param name="filters">The string-based filters to apply.</param>
+        /// <returns>The current read set with the filters applied.</returns>
+        IStorageReadSet<TEntity> FilterBy(string filters);
+
+        /// <summary>
+        /// Applies an ascending typed sort.
+        /// </summary>
+        /// <param name="sort">The expression used to sort the entity set in ascending order.</param>
+        /// <returns>The current read set with the sort applied.</returns>
+        IStorageReadSet<TEntity> SortBy(Expression<Func<TEntity, object>> sort);
+
+        /// <summary>
+        /// Applies a descending typed sort.
+        /// </summary>
+        /// <param name="sort">The expression used to sort the entity set in descending order.</param>
+        /// <returns>The current read set with the sort applied.</returns>
+        IStorageReadSet<TEntity> SortByDescending(Expression<Func<TEntity, object>> sort);
+
+        /// <summary>
+        /// Applies string-based sorting supported by the active storage provider.
+        /// </summary>
+        /// <param name="sorts">The string-based sorts to apply.</param>
+        /// <returns>The current read set with the sorts applied.</returns>
+        IStorageReadSet<TEntity> SortBy(string sorts);
+
+        /// <summary>
+        /// Enables tracking for the read operation.
+        /// </summary>
+        /// <returns>The current read set configured to track entities.</returns>
+        IStorageReadSet<TEntity> AsTracking();
+
+        /// <summary>
+        /// Disables tracking for the read operation.
+        /// </summary>
+        /// <returns>The current read set configured to avoid tracking entities.</returns>
+        IStorageReadSet<TEntity> AsNoTracking();
+
+        /// <summary>
+        /// Applies paging.
+        /// </summary>
+        /// <param name="pageNumber">The page number to retrieve.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <returns>The current read set with paging applied.</returns>
+        IStorageReadSet<TEntity> Page(int? pageNumber, int? pageSize);
+
+        /// <summary>
+        /// Retrieves the first matching item projected to the expected type.
+        /// </summary>
+        /// <typeparam name="TExpected">The expected result type.</typeparam>
+        /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
+        /// <returns>A task representing the asynchronous operation, with the first matching result if found.</returns>
+        Task<TExpected> FirstOrDefaultAsync<TExpected>(CancellationToken cancellationToken = default)
+            where TExpected : class;
+
+        /// <summary>
+        /// Retrieves a batch projected to the expected type.
+        /// </summary>
+        /// <typeparam name="TExpected">The expected result type.</typeparam>
+        /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
+        /// <returns>A task representing the asynchronous operation, with a batch result containing the matching results.</returns>
+        Task<BatchResult<TExpected>> ToBatchAsync<TExpected>(CancellationToken cancellationToken = default)
             where TExpected : class;
     }
 }
