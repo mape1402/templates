@@ -187,28 +187,46 @@
             return (source.Skip((pageNumber - 1) * pageSize).Take(pageSize), rowCount, pageCount, pageNumber, pageSize);
         }
 
+        /// <summary>
+        /// Stores fluent read options before delegating execution to the storage reader adapter.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
         private sealed class StorageReadSet<TEntity> : IStorageReadSet<TEntity> where TEntity : BaseEntity
         {
+            /// <summary>
+            /// The reader used to execute the accumulated criteria.
+            /// </summary>
             private readonly StorageReaderAdapter _reader;
+
+            /// <summary>
+            /// The criteria accumulated by the fluent read operations.
+            /// </summary>
             private readonly GetManyCriteria<TEntity> _criteria = new() { UseTracking = false };
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StorageReadSet{TEntity}"/> class.
+            /// </summary>
+            /// <param name="reader">The reader used to execute the accumulated criteria.</param>
             public StorageReadSet(StorageReaderAdapter reader)
             {
                 _reader = reader ?? throw new ArgumentNullException(nameof(reader));
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> Where(Expression<Func<TEntity, bool>> filter)
             {
                 _criteria.FiltersExpression = filter;
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> FilterBy(string filters)
             {
                 _criteria.Filters = filters;
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> SortBy(Expression<Func<TEntity, object>> sort)
             {
                 _criteria.SortingExpression = sort;
@@ -216,6 +234,7 @@
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> SortByDescending(Expression<Func<TEntity, object>> sort)
             {
                 _criteria.SortingExpression = sort;
@@ -223,24 +242,28 @@
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> SortBy(string sorts)
             {
                 _criteria.Sorts = sorts;
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> AsTracking()
             {
                 _criteria.UseTracking = true;
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> AsNoTracking()
             {
                 _criteria.UseTracking = false;
                 return this;
             }
 
+            /// <inheritdoc/>
             public IStorageReadSet<TEntity> Page(int? pageNumber, int? pageSize)
             {
                 _criteria.PageNumber = pageNumber;
@@ -248,6 +271,7 @@
                 return this;
             }
 
+            /// <inheritdoc/>
             public Task<TExpected> FirstOrDefaultAsync<TExpected>(CancellationToken cancellationToken = default)
                 where TExpected : class
             {
@@ -259,6 +283,7 @@
                 }, cancellationToken);
             }
 
+            /// <inheritdoc/>
             public Task<BatchResult<TExpected>> ToBatchAsync<TExpected>(CancellationToken cancellationToken = default)
                 where TExpected : class
                 => _reader.GetManyAsync<TEntity, TExpected>(_criteria, cancellationToken);
