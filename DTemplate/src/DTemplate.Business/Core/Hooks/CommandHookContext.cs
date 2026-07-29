@@ -36,8 +36,7 @@ namespace DTemplate.Business.Core.Hooks
         /// <param name="value">The value to store.</param>
         public void Set<TValue>(HookContextKey<TValue> key, TValue value)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
+            EnsureKey(key);
 
             _items[key] = value;
         }
@@ -50,8 +49,7 @@ namespace DTemplate.Business.Core.Hooks
         /// <returns>The stored value when found and assignable; otherwise, the default value.</returns>
         public TValue Get<TValue>(HookContextKey<TValue> key)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
+            EnsureKey(key);
 
             return _items.TryGetValue(key, out var value) && value is TValue typedValue
                 ? typedValue
@@ -66,8 +64,7 @@ namespace DTemplate.Business.Core.Hooks
         /// <returns>True if the key exists; otherwise, false.</returns>
         public bool Has<TValue>(HookContextKey<TValue> key)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
+            EnsureKey(key);
 
             return _items.ContainsKey(key);
         }
@@ -81,8 +78,7 @@ namespace DTemplate.Business.Core.Hooks
         /// <returns>True if the value was found and assignable; otherwise, false.</returns>
         public bool TryGet<TValue>(HookContextKey<TValue> key, out TValue value)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
+            EnsureKey(key);
 
             if (_items.TryGetValue(key, out var item) && item is TValue typedValue)
             {
@@ -92,6 +88,12 @@ namespace DTemplate.Business.Core.Hooks
 
             value = default;
             return false;
+        }
+
+        private static void EnsureKey<TValue>(HookContextKey<TValue> key)
+        {
+            if (key.IsDefault)
+                throw new ArgumentException("Hook context key cannot be default.", nameof(key));
         }
     }
 
