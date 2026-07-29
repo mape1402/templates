@@ -1,6 +1,7 @@
 ﻿namespace DTemplate.Business.Core.Queries
 {
     using Microsoft.Extensions.DependencyInjection;
+    using DTemplate.Business.Core.Hooks;
     using DTemplate.Business.Core.Models.Responses;
     using DTemplate.Business.Core.Services;
     using DTemplate.Domain.Contracts;
@@ -89,6 +90,11 @@
         protected IStorageReaderAdapter StorageReaderAdapter { get; }
 
         /// <summary>
+        /// Gets the hook context for the current handler execution.
+        /// </summary>
+        protected QueryHookContext<TQuery, PagedResponse<TResponse>> Context { get; private set; }
+
+        /// <summary>
         /// Gets the default page size to use if not specified in the query.
         /// </summary>
         protected int DefaultPageSize => 50;
@@ -111,6 +117,11 @@
         /// <returns>A task representing the asynchronous operation, with a paged response as the result.</returns>
         public async Task<PagedResponse<TResponse>> Handle(TQuery request, CancellationToken cancellationToken = default)
         {
+            Context = new QueryHookContext<TQuery, PagedResponse<TResponse>>(request);
+
+            await ServiceProvider.RunHooksAsync<IBeforeQueryHook<TQuery, PagedResponse<TResponse>>>(
+                hook => hook.BeforeQueryAsync(Context, cancellationToken));
+
             var batch = await StorageReaderAdapter
                 .For<TEntity>()
                 .AsNoTracking()
@@ -121,7 +132,7 @@
                 .Page(request.PagedSettings.PageNumber ?? DefaultPageNumber, request.PagedSettings.PageSize ?? DefaultPageSize)
                 .ToBatchAsync<TResponse>(cancellationToken);
 
-            return new PagedResponse<TResponse>
+            var response = new PagedResponse<TResponse>
             {
                 CurrentPage = batch.PageNumber,
                 PageSize = batch.PageSize,
@@ -129,6 +140,13 @@
                 RowCount = batch.RowCount,
                 Results = batch.Results
             };
+
+            Context.Result = response;
+
+            await ServiceProvider.RunHooksAsync<IAfterQueryHook<TQuery, PagedResponse<TResponse>>>(
+                hook => hook.AfterQueryAsync(Context, cancellationToken));
+
+            return response;
         }
 
         /// <summary>

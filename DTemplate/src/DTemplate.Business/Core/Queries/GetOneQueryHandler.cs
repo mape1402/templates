@@ -2,6 +2,7 @@
 {
     using Microsoft.Extensions.DependencyInjection;
     using DTemplate.Business.Core.Exceptions;
+    using DTemplate.Business.Core.Hooks;
     using DTemplate.Business.Core.Models.Responses;
     using DTemplate.Business.Core.Services;
     using DTemplate.Domain.Contracts;
@@ -57,6 +58,11 @@
         protected IStorageReaderAdapter StorageReaderAdapter { get; }
 
         /// <summary>
+        /// Gets the hook context for the current handler execution.
+        /// </summary>
+        protected QueryHookContext<TQuery, TResponse> Context { get; private set; }
+
+        /// <summary>
         /// Handles the query to retrieve a single entity by a specified value.
         /// </summary>
         /// <param name="request">The query request containing the value.</param>
@@ -64,12 +70,24 @@
         /// <returns>A task representing the asynchronous operation, with the response as the result.</returns>
         public virtual async Task<TResponse> Handle(TQuery request, CancellationToken cancellationToken = default)
         {
-            return await StorageReaderAdapter
+            Context = new QueryHookContext<TQuery, TResponse>(request);
+
+            await Services.RunHooksAsync<IBeforeQueryHook<TQuery, TResponse>>(
+                hook => hook.BeforeQueryAsync(Context, cancellationToken));
+
+            var response = await StorageReaderAdapter
                 .For<TEntity>()
                 .AsNoTracking()
                 .Where(GetFilterExpression(request))
                 .FirstOrDefaultAsync<TResponse>(cancellationToken)
                 ?? throw new NotFoundException(typeof(TEntity).Name, request.Value?.ToString() ?? "Unknown");
+
+            Context.Result = response;
+
+            await Services.RunHooksAsync<IAfterQueryHook<TQuery, TResponse>>(
+                hook => hook.AfterQueryAsync(Context, cancellationToken));
+
+            return response;
         }
 
         /// <summary>

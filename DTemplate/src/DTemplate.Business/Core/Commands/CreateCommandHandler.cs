@@ -1,6 +1,7 @@
 ﻿namespace DTemplate.Business.Core.Commands
 {
     using Microsoft.Extensions.DependencyInjection;
+    using DTemplate.Business.Core.Hooks;
     using DTemplate.Business.Core.Models.Responses;
     using DTemplate.Business.Core.Services;
     using DTemplate.Domain.Contracts;
@@ -54,6 +55,11 @@
         protected virtual bool UseProjectionFromStorage => false;
 
         /// <summary>
+        /// Gets the hook context for the current handler execution.
+        /// </summary>
+        protected CommandHookContext<TRequest, TEntity, TResponse> Context { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CreateCommandHandler{TRequest, TResponse, TEntity}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider used to resolve dependencies.</param>
@@ -74,10 +80,39 @@
         /// <returns>A task representing the asynchronous operation, with the response for the create command as the result.</returns>
         public override async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken = default)
         {
+            Context = new CommandHookContext<TRequest, TEntity, TResponse>(request);
+
+            await Services.RunHooksAsync<IBeforeValidationHook<TRequest, TEntity>>(
+                hook => hook.BeforeValidationAsync(Context, cancellationToken));
             await ValidateAsync(request, cancellationToken);
+
+            await Services.RunHooksAsync<IAfterValidationHook<TRequest, TEntity>>(
+                hook => hook.AfterValidationAsync(Context, cancellationToken));
+
+            await Services.RunHooksAsync<IBeforeMapHook<TRequest, TEntity>>(
+                hook => hook.BeforeMapAsync(Context, cancellationToken));
             var entity = await MapToEntityAsync(request, cancellationToken);
+            Context.Entity = entity;
+
+            await Services.RunHooksAsync<IAfterMapHook<TRequest, TEntity>>(
+                hook => hook.AfterMapAsync(Context, cancellationToken));
+
+            await Services.RunHooksAsync<IBeforeSaveHook<TRequest, TEntity>>(
+                hook => hook.BeforeSaveAsync(Context, cancellationToken));
             await SaveEntityAsync(request, entity, cancellationToken);
-            return await MapToResponseAsync(request, entity, cancellationToken);
+
+            await Services.RunHooksAsync<IAfterSaveHook<TRequest, TEntity>>(
+                hook => hook.AfterSaveAsync(Context, cancellationToken));
+
+            await Services.RunHooksAsync<IBeforeResponseHook<TRequest, TEntity, TResponse>>(
+                hook => hook.BeforeResponseAsync(Context, cancellationToken));
+            var response = await MapToResponseAsync(request, entity, cancellationToken);
+            Context.Response = response;
+
+            await Services.RunHooksAsync<IAfterResponseHook<TRequest, TEntity, TResponse>>(
+                hook => hook.AfterResponseAsync(Context, cancellationToken));
+
+            return response;
         }
 
         /// <summary>
@@ -168,6 +203,11 @@
         protected virtual bool ValidateRequest => true;
 
         /// <summary>
+        /// Gets the hook context for the current handler execution.
+        /// </summary>
+        protected CommandHookContext<TRequest, TEntity> Context { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CreateCommandHandler{TRequest, TEntity}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider used to resolve dependencies.</param>
@@ -187,9 +227,29 @@
         /// <returns>A Task representing the asynchronous operation.</returns>
         public override async Task Handle(TRequest request, CancellationToken cancellationToken = default)
         {
+            Context = new CommandHookContext<TRequest, TEntity>(request);
+
+            await Services.RunHooksAsync<IBeforeValidationHook<TRequest, TEntity>>(
+                hook => hook.BeforeValidationAsync(Context, cancellationToken));
             await ValidateAsync(request, cancellationToken);
+
+            await Services.RunHooksAsync<IAfterValidationHook<TRequest, TEntity>>(
+                hook => hook.AfterValidationAsync(Context, cancellationToken));
+
+            await Services.RunHooksAsync<IBeforeMapHook<TRequest, TEntity>>(
+                hook => hook.BeforeMapAsync(Context, cancellationToken));
             var entity = await MapToEntityAsync(request, cancellationToken);
+            Context.Entity = entity;
+
+            await Services.RunHooksAsync<IAfterMapHook<TRequest, TEntity>>(
+                hook => hook.AfterMapAsync(Context, cancellationToken));
+
+            await Services.RunHooksAsync<IBeforeSaveHook<TRequest, TEntity>>(
+                hook => hook.BeforeSaveAsync(Context, cancellationToken));
             await SaveEntityAsync(request, entity, cancellationToken);
+
+            await Services.RunHooksAsync<IAfterSaveHook<TRequest, TEntity>>(
+                hook => hook.AfterSaveAsync(Context, cancellationToken));
         }
 
         /// <summary>

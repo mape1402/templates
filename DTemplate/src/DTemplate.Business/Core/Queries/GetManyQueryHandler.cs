@@ -1,6 +1,7 @@
 ﻿namespace DTemplate.Business.Core.Queries
 {
     using Microsoft.Extensions.DependencyInjection;
+    using DTemplate.Business.Core.Hooks;
     using DTemplate.Business.Core.Models.Responses;
     using DTemplate.Business.Core.Services;
     using DTemplate.Domain.Contracts;
@@ -51,6 +52,11 @@
         protected IStorageReaderAdapter StorageReaderAdapter { get; }
 
         /// <summary>
+        /// Gets the hook context for the current handler execution.
+        /// </summary>
+        protected QueryHookContext<TQuery, IEnumerable<TResponse>> Context { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GetManyQueryHandler{TQuery, TEntity, TResponse}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider used to resolve dependencies.</param>
@@ -68,6 +74,11 @@
         /// <returns>A task representing the asynchronous operation, with a collection of responses as the result.</returns>
         public virtual async Task<IEnumerable<TResponse>> Handle(TQuery request, CancellationToken cancellationToken = default)
         {
+            Context = new QueryHookContext<TQuery, IEnumerable<TResponse>>(request);
+
+            await Services.RunHooksAsync<IBeforeQueryHook<TQuery, IEnumerable<TResponse>>>(
+                hook => hook.BeforeQueryAsync(Context, cancellationToken));
+
             var batch = await StorageReaderAdapter
                 .For<TEntity>()
                 .AsNoTracking()
@@ -77,7 +88,13 @@
                 .SortBy(request.Sorts)
                 .ToBatchAsync<TResponse>(cancellationToken);
 
-            return batch.AsEnumerable();
+            var response = batch.AsEnumerable();
+            Context.Result = response;
+
+            await Services.RunHooksAsync<IAfterQueryHook<TQuery, IEnumerable<TResponse>>>(
+                hook => hook.AfterQueryAsync(Context, cancellationToken));
+
+            return response;
         }
 
         /// <summary>

@@ -2,12 +2,14 @@
 {
     using Crabalidator.DependencyInjection;
     using DTemplate.Business;
+    using DTemplate.Business.Core.Hooks;
     using DTemplate.Business.Core.Infrastructure;
     using DTemplate.Business.Core.Services;
     using DTemplate.Business.MappingProfiles;
     using OctoMap;
     using Sieve.Services;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
 
     [ExcludeFromCodeCoverage]
     /// <summary>
@@ -20,6 +22,14 @@
         /// </summary>
         /// <param name="services">The service collection.</param>
         public static void AddBusiness(this IServiceCollection services)
+            => services.AddBusiness(Array.Empty<Assembly>());
+
+        /// <summary>
+        /// Registers business-layer services and discovers handler hooks from the specified assemblies.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="hookAssemblies">The assemblies to scan for handler hooks.</param>
+        public static void AddBusiness(this IServiceCollection services, params Assembly[] hookAssemblies)
         {
             services.AddScoped<IStorageReaderAdapter, StorageReaderAdapter>();
             services.AddScoped<IStorageWriterAdapter, StorageWriterAdapter>();
@@ -37,6 +47,12 @@
             });
 
             services.AddSingleton<ISieveProcessor, SieveProcessor>();
+
+            var assembliesToScan = new[] { typeof(Constants).Assembly }
+                .Concat(hookAssemblies ?? Array.Empty<Assembly>())
+                .ToArray();
+
+            services.AddHandlerHooksFromAssemblies(assembliesToScan);
         }
     }
 }
