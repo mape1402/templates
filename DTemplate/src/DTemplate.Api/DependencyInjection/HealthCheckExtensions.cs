@@ -9,10 +9,12 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         private const string TagServices = "services";
 
-        internal static void AddHealthChecks(this IServiceCollection services, string connectionString)
+        internal static IServiceCollection AddHealthCheckDefaults(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHealthChecks()
                 .AddCheck("Self", () => HealthCheckResult.Healthy());
+
+            return services;
         }
 
         internal static void MapHealthCheckEndPoints(this IEndpointRouteBuilder endpoints)

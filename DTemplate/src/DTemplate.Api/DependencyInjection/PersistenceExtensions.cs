@@ -15,8 +15,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="connectionString">The database connection string.</param>
-        public static void AddPersistence(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddPersistenceDefaults(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("Default");
+
             services.AddDbContext<AppDbContext>(opts =>
             {
                 // Uncomment the following line to use SQL Server
@@ -25,6 +27,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 // Uncomment the following line to use PostgreSQL
                 //opts.UseNpgsql(connectionString);
             });
+
+            return services;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
     [ExcludeFromCodeCoverage]
     internal static class MvcExtensions
     {
-        internal static void AddMvcDefaults(this IServiceCollection services)
+        internal static IServiceCollection AddMvcDefaults(this IServiceCollection services)
         {
             services.AddRouting(opts => opts.LowercaseUrls = true);
             services.AddControllers(opts =>
@@ -46,6 +46,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 opts.JsonSerializerOptions.AddTurtlePathCIdConverters();
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
+            return services;
         }
     }
 

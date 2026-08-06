@@ -9,8 +9,9 @@ namespace DTemplate.Api.DependencyInjection
     [ExcludeFromCodeCoverage]
     internal static class SwaggerExtensions
     {
-        internal static void AddSwaggerDefaults(this IServiceCollection services)
+        internal static IServiceCollection AddSwaggerDefaults(this IServiceCollection services)
         {
+            services.AddEndpointsApiExplorer();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(opts =>
             {
@@ -22,10 +23,15 @@ namespace DTemplate.Api.DependencyInjection
                 foreach (var fileName in Directory.GetFiles(AppContext.BaseDirectory, "*.xml"))
                     opts.IncludeXmlComments(fileName);
             });
+
+            return services;
         }
 
         internal static void UseSwaggerDefaults(this IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (!env.IsDevelopment())
+                return;
+
             app.UseSwagger(opts =>
             {
                 opts.RouteTemplate = "/swagger/{documentName}/swagger.json";

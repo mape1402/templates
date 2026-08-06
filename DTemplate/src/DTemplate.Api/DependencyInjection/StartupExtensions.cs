@@ -1,17 +1,6 @@
-using Crabalidator.DependencyInjection;
-using DTemplate.Api.Boundaries;
 using DTemplate.Api.DependencyInjection;
-using DTemplate.Business;
-using DTemplate.Persistence;
-using OctoMap;
-using Pigeon.Messaging.Azure.ServiceBus;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
-using TurtlePath.Crabalidator;
-using TurtlePath.Domain.Identifier;
-using TurtlePath.OctoMap;
-using TurtlePath.Mapping;
-using TurtlePath.Validation;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -30,68 +19,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddDefaults(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
-            var connectionString = configuration.GetConnectionString("Default");
-
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerDefaults();
-
-            services.AddPersistence(connectionString);
-            services.AddPelican(typeof(Constants).Assembly);
-
-            services.AddPigeon(configuration, builder =>
-            {
-                // Uncomment this line to scan for consumers in the current assembly:
-                // builder.ScanConsumersFromAssemblies(typeof(Program).Assembly);
-
-                builder.UseAzureServiceBus();
-            });
-
-            services.Configure<TransactionBoundaryOptions>(configuration.GetSection("TransactionBoundary"));
-            services.AddSingleton<ITransactionBoundaryRequestFilter>(provider =>
-            {
-                var filter = new TransactionBoundaryRequestFilter(provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<TransactionBoundaryOptions>>());
-                filter.Discover(typeof(Constants).Assembly);
-
-                return filter;
-            });
-
-            services.AddSpider(builder =>
-            {
-                builder.AddExecutionBoundary<TransactionExecutionBoundary>();
-            });
-
-            services.AddCrabalidator(typeof(Constants).Assembly);
-
-            services.AddOctoMap(registration =>
-            {
-                registration.Options.EnableRuntimeImplicitMaps = true;
-                registration.Options.DuplicateMapPolicy = DuplicateMapPolicy.Throw;
-                registration.AddMaps(typeof(Constants).Assembly);
-            });
-
-            services.AddScoped<IMapperAdapter, OctoMapAdapter>();
-            services.AddScoped<IValidatorAdapter, CrabalidatorAdapter>();
-
-            services.AddTurtlePath(typeof(Constants).Assembly)
-                .UseOctoMap()
-                .UseCrabalidator()
-                .UseSieve()
-                .UseCId<Ulid, string>(config =>
-                {
-                    config.DefaultFactory = () => CId.From(Ulid.NewUlid());
-                    config.ConvertToDb = id => id.ToString();
-                    config.ConvertFromDb = value => CId.From(Ulid.Parse(value));
-                    config.JsonConverter = value => string.IsNullOrEmpty(value) ? CId.From(Ulid.Empty) : CId.From(Ulid.Parse(value));
-                    config.NullableJsonConverter = value => string.IsNullOrEmpty(value) ? null : CId.From(Ulid.Parse(value));
-                    config.ParseFunction = value => CId.From(Ulid.Parse(value));
-                })
-                .UseEntityFrameworkCore<AppDbContext>();
-
-            services.AddMvcDefaults();
-
-            services.AddHealthChecks(connectionString); // TODO: Add health checks for Database and other services
-
-            return services;
+            return services
+                .AddMvcDefaults()
+                .AddSwaggerDefaults()
+                .AddHealthCheckDefaults(configuration)
+                .AddPersistenceDefaults(configuration)
+                .AddApplicationDefaults()
+                .AddMessagingDefaults(configuration)
+                .AddPipelineDefaults(configuration)
+                .AddCustomContainer();
         }
         
         /// <summary>
@@ -102,18 +38,33 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The application builder.</returns>
         public static IApplicationBuilder UseDefaults(this IApplicationBuilder app, IWebHostEnvironment environment)
         {
+            app.UseLoggingDefaults(environment);
+            app.UseSwaggerDefaults(environment);
+            app.UseRoutingDefaults();
+            app.UseEndpointDefaults();
+
+            return app;
+        }
+
+        private static IApplicationBuilder UseLoggingDefaults(this IApplicationBuilder app, IWebHostEnvironment environment)
+        {
             if (environment.IsDevelopment())
-            {
                 app.UseSerilogRequestLogging();
-                app.UseSwaggerDefaults(environment);
-            }
 
+            return app;
+        }
+
+        private static IApplicationBuilder UseRoutingDefaults(this IApplicationBuilder app)
+        {
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
+            return app;
+        }
+
+        private static IApplicationBuilder UseEndpointDefaults(this IApplicationBuilder app)
+        {
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthCheckEndPoints();
