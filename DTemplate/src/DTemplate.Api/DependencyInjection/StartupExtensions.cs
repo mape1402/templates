@@ -4,11 +4,14 @@ using DTemplate.Api.DependencyInjection;
 using DTemplate.Business;
 using DTemplate.Persistence;
 using OctoMap;
+using Pigeon.Messaging.Azure.ServiceBus;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
 using TurtlePath.Crabalidator;
 using TurtlePath.Domain.Identifier;
 using TurtlePath.OctoMap;
+using TurtlePath.Mapping;
+using TurtlePath.Validation;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -37,9 +40,19 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddPigeon(configuration, builder =>
             {
-                //builder
-                    //.ScanConsumersFromAssemblies(typeof(Program).Assembly) // uncomment this line to scan for consumers in the current assembly
-                    //.UseRabbitMq(); // uncomment this line to use RabbitMQ as the message broker
+                // Uncomment this line to scan for consumers in the current assembly:
+                // builder.ScanConsumersFromAssemblies(typeof(Program).Assembly);
+
+                builder.UseAzureServiceBus();
+            });
+
+            services.Configure<TransactionBoundaryOptions>(configuration.GetSection("TransactionBoundary"));
+            services.AddSingleton<ITransactionBoundaryRequestFilter>(provider =>
+            {
+                var filter = new TransactionBoundaryRequestFilter(provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<TransactionBoundaryOptions>>());
+                filter.Discover(typeof(Constants).Assembly);
+
+                return filter;
             });
 
             services.AddSpider(builder =>
@@ -55,6 +68,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 registration.Options.DuplicateMapPolicy = DuplicateMapPolicy.Throw;
                 registration.AddMaps(typeof(Constants).Assembly);
             });
+
+            services.AddScoped<IMapperAdapter, OctoMapAdapter>();
+            services.AddScoped<IValidatorAdapter, CrabalidatorAdapter>();
 
             services.AddTurtlePath(typeof(Constants).Assembly)
                 .UseOctoMap()

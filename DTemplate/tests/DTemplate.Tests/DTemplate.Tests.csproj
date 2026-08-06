@@ -9,4 +9,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DTemplate.Api\DTemplate.Api.csproj" />
+  </ItemGroup>
+
 </Project>

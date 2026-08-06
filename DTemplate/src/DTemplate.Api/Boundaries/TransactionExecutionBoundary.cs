@@ -9,14 +9,34 @@ namespace DTemplate.Api.Boundaries
     public sealed class TransactionExecutionBoundary : PipelineExecutionBoundary
     {
         private const string ScopeKey = "DTemplate.TransactionExecutionBoundary.Scope";
+        private readonly ITransactionBoundaryRequestFilter requestFilter;
+        private readonly TransactionBoundaryOptions options;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransactionExecutionBoundary"/> class.
+        /// </summary>
+        /// <param name="options">The transaction boundary options.</param>
+        /// <param name="requestFilter">The cached request filter.</param>
+        public TransactionExecutionBoundary(
+            Microsoft.Extensions.Options.IOptions<TransactionBoundaryOptions> options,
+            ITransactionBoundaryRequestFilter requestFilter)
+        {
+            this.options = options?.Value ?? new TransactionBoundaryOptions();
+            this.requestFilter = requestFilter ?? throw new ArgumentNullException(nameof(requestFilter));
+        }
 
         /// <inheritdoc />
         public override ValueTask BeginAsync(PipelineExecutionContext context, CancellationToken cancellationToken)
         {
+            if (!ShouldOpenTransaction(context))
+                return ValueTask.CompletedTask;
+
             var transactionOptions = new TransactionOptions
             {
-                IsolationLevel = IsolationLevel.ReadCommitted,
-                Timeout = TransactionManager.MaximumTimeout
+                IsolationLevel = options.IsolationLevel,
+                Timeout = options.TimeoutSeconds.HasValue
+                    ? TimeSpan.FromSeconds(options.TimeoutSeconds.Value)
+                    : TransactionManager.MaximumTimeout
             };
 
             context.Items[ScopeKey] = new TransactionScope(
@@ -73,5 +93,8 @@ namespace DTemplate.Api.Boundaries
             scope = null;
             return false;
         }
+
+        private bool ShouldOpenTransaction(PipelineExecutionContext context)
+            => requestFilter.ShouldOpenTransaction(context?.RequestType);
     }
 }

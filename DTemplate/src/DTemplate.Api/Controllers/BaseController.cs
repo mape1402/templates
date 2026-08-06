@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pelican.Mediator;
+using Spider.Pipelines.Core;
 
 namespace DTemplate.Api.Controllers
 {
@@ -11,12 +12,16 @@ namespace DTemplate.Api.Controllers
     public class BaseController : ControllerBase
     {
         private IMediator _mediator;
+        private ISpider _spider;
 
         /// <summary>
         /// Gets the mediator resolved from the current request services.
         /// </summary>
-        public IMediator Mediator => 
-            _mediator ??= HttpContext.RequestServices.GetService<IMediator>() 
-            ?? throw new InvalidOperationException("Mediator service is not available.");
+        public IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+
+        /// <summary>
+        /// Gets the spider instance from the current context.
+        /// </summary>
+        public ISpider Spider => _spider ??= HttpContext.RequestServices.GetRequiredService<ISpider>();
     }
 }

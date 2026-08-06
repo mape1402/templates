@@ -1,14 +1,21 @@
-﻿using Pigeon.Messaging.Consuming.Dispatching;
+using Pelican.Mediator;
+using Pigeon.Messaging.Consuming.Dispatching;
 using Spider.Pipelines.Core;
 
 namespace DTemplate.Api.HubConsumers
 {
     /// <summary>
-    /// Provides a base hub consumer with access to the spider services.
+    /// Provides a base hub consumer with access to mediator and spider services.
     /// </summary>
     public abstract class BaseHubConsumer : HubConsumer
     {
+        private IMediator _mediator;
         private ISpider _spider;
+
+        /// <summary>
+        /// Gets the mediator instance from the current context.
+        /// </summary>
+        public IMediator Mediator => _mediator ??= Context.Services.GetRequiredService<IMediator>();
 
         /// <summary>
         /// Gets the spider instance from the current context.
