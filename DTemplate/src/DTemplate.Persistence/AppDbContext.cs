@@ -1,41 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DTemplate.Domain.Identifier;
-using DTemplate.Persistence.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using TurtlePath.EntityFrameworkCore;
+using TurtlePath.EntityFrameworkCore.Conventions;
 
 namespace DTemplate.Persistence
 {
     /// <summary>
     /// Represents the EF Core database context for the application.
     /// </summary>
-    public sealed class AppDbContext : DbContext, IDbContext
+    public sealed class AppDbContext : BaseDbContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppDbContext"/> class.
         /// </summary>
         /// <param name="options">The options to configure the context.</param>
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
-        protected override void OnModelCreating(ModelBuilder builder)
+        /// <param name="turtlePathOptions">The TurtlePath DbContext options.</param>
+        /// <param name="modelConventions">The TurtlePath model conventions.</param>
+        public AppDbContext(
+            DbContextOptions<AppDbContext> options,
+            TurtlePathDbContextOptions turtlePathOptions,
+            IEnumerable<ITurtlePathModelConvention> modelConventions)
+            : base(options, turtlePathOptions, modelConventions)
         {
-            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
-            foreach (var entityType in builder.Model.GetEntityTypes())
-            {
-                foreach (var property in entityType.GetProperties())
-                {
-                    var clrType = property.ClrType;
-                    var underlyingType = Nullable.GetUnderlyingType(clrType);
-
-                    if (clrType == typeof(CId) || underlyingType == typeof(CId))
-                    {
-                        property.SetValueConverter(CIdMetadata.DbConverter);
-
-                        if(CIdMetadata.HasDbType)
-                            property.SetColumnType(CIdMetadata.DbType);
-                    }
-                }
-
-            }
         }
     }
 }

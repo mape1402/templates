@@ -7,6 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="TurtlePath.EntityFrameworkCore" />
+    <PackageReference Include="TurtlePath.Analyzers" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

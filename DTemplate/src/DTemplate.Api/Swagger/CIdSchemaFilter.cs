@@ -2,8 +2,8 @@
 {
     using Microsoft.OpenApi.Any;
     using Microsoft.OpenApi.Models;
-    using DTemplate.Domain.Identifier;
     using Swashbuckle.AspNetCore.SwaggerGen;
+    using TurtlePath.Domain.Identifier;
 
     /// <summary>
     /// Adjusts the schema for <see cref="CId"/> types in Swagger.

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Net;
-using DTemplate.Business.Core.Exceptions;
+using TurtlePath.Exceptions;
+using TurtlePath.Validation;
 
 namespace DTemplate.Api.Filters
 {
@@ -37,7 +38,7 @@ namespace DTemplate.Api.Filters
 
             switch (context.Exception)
             {
-                case ModelValidationException vEx:
+                case ValidationException vEx:
                     errors = vEx.Errors.ToArray();
                     code = HttpStatusCode.BadRequest;
                     break;

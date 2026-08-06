@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
 using DTemplate.Persistence;
-using DTemplate.Persistence.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -26,8 +25,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 // Uncomment the following line to use PostgreSQL
                 //opts.UseNpgsql(connectionString);
             });
-
-            services.AddScoped<IDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         }
     }
 }

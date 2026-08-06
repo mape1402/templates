@@ -1,11 +1,14 @@
-﻿using DTemplate.Api.DependencyInjection;
+using Crabalidator.DependencyInjection;
+using DTemplate.Api.Boundaries;
+using DTemplate.Api.DependencyInjection;
 using DTemplate.Business;
-using DTemplate.Business.Core.Exceptions;
-using DTemplate.Business.Core.PipelineBehaviors;
-using DTemplate.Domain.Identifier;
-using Pelican.Mediator;
+using DTemplate.Persistence;
+using OctoMap;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
+using TurtlePath.Crabalidator;
+using TurtlePath.Domain.Identifier;
+using TurtlePath.OctoMap;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -31,32 +34,42 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddPersistence(connectionString);
             services.AddPelican(typeof(Constants).Assembly);
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionPipelineBehavior<,>));
 
             services.AddPigeon(configuration, builder =>
             {
                 //builder
-                    //.ScanConsumersFromAssemblies(typeof(Program).Assembly) // ucomment this line to scan for consumers in the current assembly
+                    //.ScanConsumersFromAssemblies(typeof(Program).Assembly) // uncomment this line to scan for consumers in the current assembly
                     //.UseRabbitMq(); // uncomment this line to use RabbitMQ as the message broker
             });
 
-            services.AddSpider();
-            services.AddOrchestrationWorking()
-                .AddErrorCodeBinding<BadRequestException>(400)
-                .AddErrorCodeBinding<NotFoundException>(404)
-                .AddErrorCodeBinding<Exception>(500);
-
-            services.AddBusiness();
-
-            services.UseCId<Ulid, string>(config =>
+            services.AddSpider(builder =>
             {
-                config.DefaultFactory = () => new CId(Ulid.NewUlid());
-                config.ConvertToDb = id => id.ToString();
-                config.ConvertFromDb = value => CId.Parse(value);
-                config.JsonConverter = value => string.IsNullOrEmpty(value) ? new CId(Ulid.Empty) : CId.Parse(value);
-                config.NullableJsonConverter = value => string.IsNullOrEmpty(value) ? null : CId.Parse(value);
-                config.ParseFunction = value => new CId(Ulid.Parse(value));
+                builder.AddExecutionBoundary<TransactionExecutionBoundary>();
             });
+
+            services.AddCrabalidator(typeof(Constants).Assembly);
+
+            services.AddOctoMap(registration =>
+            {
+                registration.Options.EnableRuntimeImplicitMaps = true;
+                registration.Options.DuplicateMapPolicy = DuplicateMapPolicy.Throw;
+                registration.AddMaps(typeof(Constants).Assembly);
+            });
+
+            services.AddTurtlePath(typeof(Constants).Assembly)
+                .UseOctoMap()
+                .UseCrabalidator()
+                .UseSieve()
+                .UseCId<Ulid, string>(config =>
+                {
+                    config.DefaultFactory = () => CId.From(Ulid.NewUlid());
+                    config.ConvertToDb = id => id.ToString();
+                    config.ConvertFromDb = value => CId.From(Ulid.Parse(value));
+                    config.JsonConverter = value => string.IsNullOrEmpty(value) ? CId.From(Ulid.Empty) : CId.From(Ulid.Parse(value));
+                    config.NullableJsonConverter = value => string.IsNullOrEmpty(value) ? null : CId.From(Ulid.Parse(value));
+                    config.ParseFunction = value => CId.From(Ulid.Parse(value));
+                })
+                .UseEntityFrameworkCore<AppDbContext>();
 
             services.AddMvcDefaults();
 

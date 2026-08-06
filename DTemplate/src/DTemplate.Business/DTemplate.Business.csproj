@@ -4,20 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Queries\**" />
-    <Compile Remove="Validations\**" />
-    <EmbeddedResource Remove="Queries\**" />
-    <EmbeddedResource Remove="Validations\**" />
-    <None Remove="Queries\**" />
-    <None Remove="Validations\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DTemplate.Persistence\DTemplate.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,8 +12,8 @@
     <PackageReference Include="OctoMap.Analyzers" PrivateAssets="all" />
     <PackageReference Include="Crabalidator" />
     <PackageReference Include="Pelican.Mediator" />
-    <PackageReference Include="Pigeon.Messaging" />
-    <PackageReference Include="Sieve" />
+    <PackageReference Include="TurtlePath" />
+    <PackageReference Include="TurtlePath.Analyzers" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

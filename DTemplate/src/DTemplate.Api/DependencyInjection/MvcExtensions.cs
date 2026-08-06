@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using DTemplate.Api.Filters;
-using DTemplate.Domain.Identifier;
 using System.Text.Json.Serialization;
+using TurtlePath.Domain.Identifier.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -43,8 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 // Configure JSON options here if needed
                 // For example, to use camel case naming:
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                opts.JsonSerializerOptions.Converters.Add(new CIdJsonConverter());
-                opts.JsonSerializerOptions.Converters.Add(new CIdNulleableJsonConverter());
+                opts.JsonSerializerOptions.AddTurtlePathCIdConverters();
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
         }

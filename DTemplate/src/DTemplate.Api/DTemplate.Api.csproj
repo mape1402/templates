@@ -6,11 +6,18 @@
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
-    <PackageReference Include="Krackend.Sagas.Orchestration" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Ulid" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Pigeon.Messaging" />
+    <PackageReference Include="Spider.Pipelines" />
+    <PackageReference Include="TurtlePath" />
+    <PackageReference Include="TurtlePath.Crabalidator" />
+    <PackageReference Include="TurtlePath.Domain" />
+    <PackageReference Include="TurtlePath.EntityFrameworkCore" />
+    <PackageReference Include="TurtlePath.OctoMap" />
+    <PackageReference Include="TurtlePath.Sieve" />
   </ItemGroup>
 
   <ItemGroup>
